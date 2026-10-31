@@ -7,38 +7,54 @@
 # 也从这里读取课程名、学时等信息
 # ============================================================
 
-title: 课程名称                      # 书名，例如：机器学习
-description: 面向成人教育人工智能技术应用专业（专科）的《课程名称》教材，每章配套动手实验
+title: 人工智能数据分析与处理          # 书名
+description: 面向成人教育人工智能技术应用专业（专科）的《人工智能数据分析与处理》教材，零基础友好，12 章 36 个动手实验
 audience: 成人教育（继续教育）人工智能技术应用专业专科学生，多为在职学习者
 github_user: MingziFu9                # 网址 https://<github_user>.github.io/<repo>/
-repo: ai-textbook-template            # GitHub 仓库名（用模板新建后改成本课的，如 ml-textbook）
+repo: ai-data-analysis            # GitHub 仓库名（用模板新建后改成本课的，如 ml-textbook）
 
 credits: 4                            # 学分
-hours: {theory: 60, lab: 12}          # 学时：理论 + 实验
-semester: 3                           # 开课学期
-exam: 闭卷                            # 期末考核方式
+hours: {theory: 54, lab: 18}          # 学时：理论 + 实验
+semester: 4                           # 开课学期
+exam: 开卷                            # 期末考核方式
 labs_per_chapter: 3                   # 每章实验数；0 表示没有实验
 lab_section: 本章实验                 # 实验部分的二级标题；导论用“在线体验”
 lab_word: 实验                        # 每个实验的三级标题前缀（### 实验 N-M）；导论用“体验”
 frontier_title: 前沿视窗              # 每章“前沿”小节的名称，导论用“身边的 AI”
-certificates:                         # 对应的职业证书；没有证书的课程写成 certificates: []，导航里就不显示“证书考点对照”页
-  - name: 证书名称（级别）
-    issuer: 发证机构，标准或考纲名称（年份）
+certificates:                         # 对应的职业证书
+  - name: 人工智能训练师（四级）
+    issuer: 人力资源和社会保障部、工业和信息化部，《人工智能训练师国家职业技能标准》（2021 年版）
+  - name: 人工智能数据处理工程师（中级）
+    issuer: 工业和信息化部教育与考试中心，《人工智能数据处理工程师》培训课程标准（试行版，2022）
+  - name: Python 技术应用工程师（中级）
+    issuer: 工业和信息化部教育与考试中心（未找到官方考纲，依据培训机构转述）
 
 # 章节：dir 是 docs/chapters/ 下的文件夹名（两位章号开头），short 用于学习图谱等窄处
 # theory / lab 是本章学时；labs 可单独覆盖本章实验数；offline 可指定本章线下学时（不写则按 online_ratio 分）
 chapters:
-  - {dir: 01-sample, title: 示例章, short: 示例章, theory: 5, lab: 1}
+  - {dir: 01-overview, title: "数据分析与处理概述", short: "概述", theory: 4, lab: 1, offline: 1}
+  - {dir: 02-pandas, title: "Python 数据处理入门：从表格到 pandas", short: "pandas 入门", theory: 5, lab: 2, offline: 1}
+  - {dir: 03-collection, title: "数据采集：文件、数据库与接口", short: "数据采集", theory: 4, lab: 2, offline: 1}
+  - {dir: 04-cleaning, title: "数据清洗与整合", short: "数据清洗", theory: 5, lab: 2, offline: 1}
+  - {dir: 05-annotation, title: "数据标注：任务、规范与工具", short: "标注规范与工具", theory: 5, lab: 2, offline: 2}
+  - {dir: 06-annotation-qa, title: "数据标注：质量审核与管理", short: "标注质量审核", theory: 4, lab: 2, offline: 2}
+  - {dir: 07-statistics, title: "探索性分析与统计推断", short: "统计分析", theory: 5, lab: 1, offline: 1}
+  - {dir: 08-visualization, title: "数据可视化与分析报告", short: "可视化与报告", theory: 5, lab: 2, offline: 1}
+  - {dir: 09-modeling, title: "建模应用：从 scikit-learn 到预训练模型", short: "建模应用", theory: 5, lab: 1, offline: 1}
+  - {dir: 10-recommendation, title: "推荐系统", short: "推荐系统", theory: 4, lab: 1, offline: 1}
+  - {dir: 11-operations, title: "智能系统运维与优化", short: "系统运维", theory: 4, lab: 1, offline: 1}
+  - {dir: 12-ethics-project, title: "数据伦理、隐私合规与综合项目", short: "合规与综合项目", theory: 4, lab: 1, offline: 1}
 
 # 其他页面：追加在导航“常见问题”之后，如 extra_pages: [{file: mock-exam.md, title: 在线模拟卷}]
 extra_pages: []
 
 # 附录：docs/appendix/ 下的文件，按顺序自动编号为 A、B、C……（术语表固定为 glossary.md）
 appendices:
-  - {file: a-python.md, title: Python 速查}
-  - {file: b-libraries.md, title: 工具库速查}
+  - {file: a-python.md, title: Python 与 pandas 零基础入门}
+  - {file: b-libraries.md, title: 常用工具速查}
   - {file: c-environment.md, title: 实验环境与数据说明}
   - {file: glossary.md, title: 术语表}
+  - {file: e-templates.md, title: 报告与规范模板}
 
 # 教案默认设置（每章可在 lesson-plans/chNN.yml 里覆盖）
 lesson_plan:

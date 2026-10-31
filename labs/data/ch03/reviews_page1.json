@@ -1,0 +1,371 @@
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "page": 1,
+    "page_size": 30,
+    "total": 12000,
+    "items": [
+      {
+        "review_id": "R000001",
+        "shop": {
+          "shop_id": "S0008"
+        },
+        "user": {
+          "user_id": "U03578"
+        },
+        "rating": 4,
+        "content": "白切鸡味道很正宗 外卖送了一个多小时 下次还会再来",
+        "created_at": "2025-01-01T20:46:39"
+      },
+      {
+        "review_id": "R000002",
+        "shop": {
+          "shop_id": "S0271"
+        },
+        "user": {
+          "user_id": "U03577"
+        },
+        "rating": 5,
+        "content": "环境干净整洁，服务周到，主动加茶，煲仔饭鲜嫩入味，下次还会再来",
+        "created_at": "2025-01-01T17:06:52"
+      },
+      {
+        "review_id": "R000003",
+        "shop": {
+          "shop_id": "S0181"
+        },
+        "user": {
+          "user_id": "U04923"
+        },
+        "rating": 4,
+        "content": "服务员很热情",
+        "created_at": "2025-01-01T15:32:24"
+      },
+      {
+        "review_id": "R000004",
+        "shop": {
+          "shop_id": "S0031"
+        },
+        "user": {
+          "user_id": "U02579"
+        },
+        "rating": 5,
+        "content": "辣椒炒肉一绝，回味无穷 送到还是热的 服务员很热情 推荐！",
+        "created_at": "2025-01-03T01:54:36"
+      },
+      {
+        "review_id": "R000005",
+        "shop": {
+          "shop_id": "S0164"
+        },
+        "user": {
+          "user_id": "U04025"
+        },
+        "rating": 1,
+        "content": "外卖送了一个多小时，比别家贵一倍，差评",
+        "created_at": "2025-01-03T03:28:09"
+      },
+      {
+        "review_id": "R000006",
+        "shop": {
+          "shop_id": "S0133"
+        },
+        "user": {
+          "user_id": "U01953"
+        },
+        "rating": 5,
+        "content": "双皮奶味道很正宗，不过送到都凉了，五星好评",
+        "created_at": "2025-01-03T01:36:04"
+      },
+      {
+        "review_id": "R000007",
+        "shop": {
+          "shop_id": "S0033"
+        },
+        "user": {
+          "user_id": "U04109"
+        },
+        "rating": 5,
+        "content": "送到还是热的，老板人很好，双皮奶做得特别好吃，强烈推荐给大家",
+        "created_at": "2025-01-04T10:39:08"
+      },
+      {
+        "review_id": "R000008",
+        "shop": {
+          "shop_id": "S0015"
+        },
+        "user": {
+          "user_id": "U03263"
+        },
+        "rating": 1,
+        "content": "烤生蚝一点味道都没有！环境太吵！失望👎",
+        "created_at": "2025-01-01T23:00:05"
+      },
+      {
+        "review_id": "R000009",
+        "shop": {
+          "shop_id": "S0269"
+        },
+        "user": {
+          "user_id": "U02225"
+        },
+        "rating": 4,
+        "content": "和以前差不多",
+        "created_at": "2025-01-02T19:02:21"
+      },
+      {
+        "review_id": "R000010",
+        "shop": {
+          "shop_id": "S0175"
+        },
+        "user": {
+          "user_id": "U02944"
+        },
+        "rating": 4,
+        "content": "服务周到，主动加茶。骑手很准时",
+        "created_at": "2025-01-03T20:59:01"
+      },
+      {
+        "review_id": "R000011",
+        "shop": {
+          "shop_id": "S0152"
+        },
+        "user": {
+          "user_id": "U01156"
+        },
+        "rating": 5,
+        "content": "装修很有格调。价格偏贵。下次还会再来",
+        "created_at": "2025-01-03T04:30:54"
+      },
+      {
+        "review_id": "R000012",
+        "shop": {
+          "shop_id": "S0287"
+        },
+        "user": {
+          "user_id": "U02667"
+        },
+        "rating": 5,
+        "content": "杨枝甘露做得特别好吃！送到还是热的",
+        "created_at": "2025-01-01T22:51:59"
+      },
+      {
+        "review_id": "R000013",
+        "shop": {
+          "shop_id": "S0195"
+        },
+        "user": {
+          "user_id": "U01349"
+        },
+        "rating": 2,
+        "content": "环境太吵 差评",
+        "created_at": "2025-01-03T03:05:30"
+      },
+      {
+        "review_id": "R000014",
+        "shop": {
+          "shop_id": "S0223"
+        },
+        "user": {
+          "user_id": "U02960"
+        },
+        "rating": 4,
+        "content": "服务周到，主动加茶，送到还是热的，五星好评",
+        "created_at": "2025-01-02T22:07:25"
+      },
+      {
+        "review_id": "R000015",
+        "shop": {
+          "shop_id": "S0233"
+        },
+        "user": {
+          "user_id": "U02453"
+        },
+        "rating": 2,
+        "content": "第一次来，感觉普通",
+        "created_at": "2025-01-03T20:31:05"
+      },
+      {
+        "review_id": "R000016",
+        "shop": {
+          "shop_id": "S0213"
+        },
+        "user": {
+          "user_id": "U02964"
+        },
+        "rating": 2,
+        "content": "剁椒鱼头鲜嫩入味，叫了三次都没人理[思考]",
+        "created_at": "2025-01-02T15:52:00"
+      },
+      {
+        "review_id": "R000017",
+        "shop": {
+          "shop_id": "S0066"
+        },
+        "user": {
+          "user_id": "U01730"
+        },
+        "rating": 1,
+        "content": "卫生堪忧，地上有垃圾。大家避雷[失望]",
+        "created_at": "2025-01-03T05:10:56"
+      },
+      {
+        "review_id": "R000018",
+        "shop": {
+          "shop_id": "S0076"
+        },
+        "user": {
+          "user_id": "U04127"
+        },
+        "rating": 5,
+        "content": "适合朋友聚会，强烈推荐给大家",
+        "created_at": "2025-01-04T06:14:07"
+      },
+      {
+        "review_id": "R000019",
+        "shop": {
+          "shop_id": "S0189"
+        },
+        "user": {
+          "user_id": "U03226"
+        },
+        "rating": 5,
+        "content": "送到还是热的。环境太吵。五星好评",
+        "created_at": "2025-01-04T10:49:33"
+      },
+      {
+        "review_id": "R000020",
+        "shop": {
+          "shop_id": "S0166"
+        },
+        "user": {
+          "user_id": "U03685"
+        },
+        "rating": 5,
+        "content": "用了优惠券很划算，叉烧味道很正宗，五星好评",
+        "created_at": "2025-01-03T12:53:21"
+      },
+      {
+        "review_id": "R000021",
+        "shop": {
+          "shop_id": "S0109"
+        },
+        "user": {
+          "user_id": "U04448"
+        },
+        "rating": 5,
+        "content": "猪脚饭做得特别好吃。外卖送得很快。推荐！",
+        "created_at": "2025-01-03T18:58:17"
+      },
+      {
+        "review_id": "R000022",
+        "shop": {
+          "shop_id": "S0059"
+        },
+        "user": {
+          "user_id": "U03374"
+        },
+        "rating": 4,
+        "content": "收银员爱答不理，包装很严实，第一次来，感觉普通",
+        "created_at": "2025-01-02T09:24:43"
+      },
+      {
+        "review_id": "R000023",
+        "shop": {
+          "shop_id": "S0041"
+        },
+        "user": {
+          "user_id": "U04814"
+        },
+        "rating": 5,
+        "content": "价格实惠，鸡腿饭鲜嫩入味，服务员很热情，下次还会再来",
+        "created_at": "2025-01-03T19:27:23"
+      },
+      {
+        "review_id": "R000024",
+        "shop": {
+          "shop_id": "S0119"
+        },
+        "user": {
+          "user_id": "U03068"
+        },
+        "rating": 5,
+        "content": "包装很严实，五星好评",
+        "created_at": "2025-01-03T13:40:00"
+      },
+      {
+        "review_id": "R000025",
+        "shop": {
+          "shop_id": "S0035"
+        },
+        "user": {
+          "user_id": "U00277"
+        },
+        "rating": 4,
+        "content": "卫生堪忧，地上有垃圾，菜品味道在线",
+        "created_at": "2025-01-03T05:31:06"
+      },
+      {
+        "review_id": "R000026",
+        "shop": {
+          "shop_id": "S0233"
+        },
+        "user": {
+          "user_id": "U04485"
+        },
+        "rating": 4,
+        "content": "卫生堪忧，地上有垃圾！上菜很快！一般般，没什么特别的",
+        "created_at": "2025-01-04T21:34:46"
+      },
+      {
+        "review_id": "R000027",
+        "shop": {
+          "shop_id": "S0083"
+        },
+        "user": {
+          "user_id": "U00633"
+        },
+        "rating": 1,
+        "content": "外卖送了一个多小时 性价比很高 差评",
+        "created_at": "2025-01-02T21:25:37"
+      },
+      {
+        "review_id": "R000028",
+        "shop": {
+          "shop_id": "S0244"
+        },
+        "user": {
+          "user_id": "U03169"
+        },
+        "rating": 5,
+        "content": "座位宽敞。烤茄子鲜嫩入味。叫了三次都没人理",
+        "created_at": "2025-01-03T12:04:02"
+      },
+      {
+        "review_id": "R000029",
+        "shop": {
+          "shop_id": "S0101"
+        },
+        "user": {
+          "user_id": "U04831"
+        },
+        "rating": 4,
+        "content": "性价比很高，不过上菜太慢了，等了四十分钟，推荐！",
+        "created_at": "2025-01-02T22:32:02"
+      },
+      {
+        "review_id": "R000030",
+        "shop": {
+          "shop_id": "S0172"
+        },
+        "user": {
+          "user_id": "U02679"
+        },
+        "rating": 5,
+        "content": "麻婆豆腐味道很正宗",
+        "created_at": "2025-01-04T06:35:47"
+      }
+    ]
+  }
+}

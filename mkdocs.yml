@@ -1,8 +1,8 @@
 # 站点名、描述、网址和 nav 由 python tools/course.py sync 根据 course.yml 生成，请改 course.yml，不要手改这几项
-site_name: 课程名称
-site_description: 面向成人教育人工智能技术应用专业（专科）的《课程名称》教材，每章配套动手实验
-site_url: https://mingzifu9.github.io/ai-textbook-template/
-repo_url: https://github.com/MingziFu9/ai-textbook-template
+site_name: 人工智能数据分析与处理
+site_description: 面向成人教育人工智能技术应用专业（专科）的《人工智能数据分析与处理》教材，零基础友好，12 章 36 个动手实验
+site_url: https://mingzifu9.github.io/ai-data-analysis/
+repo_url: https://github.com/MingziFu9/ai-data-analysis
 docs_dir: docs
 theme:
   name: material
@@ -37,7 +37,18 @@ extra_javascript:
 nav:
   - 首页: index.md
   - 课程描述: course-description.md
-  - "第 1 章 示例章": chapters/01-sample/index.md
+  - "第 1 章 数据分析与处理概述": chapters/01-overview/index.md
+  - "第 2 章 Python 数据处理入门：从表格到 pandas": chapters/02-pandas/index.md
+  - "第 3 章 数据采集：文件、数据库与接口": chapters/03-collection/index.md
+  - "第 4 章 数据清洗与整合": chapters/04-cleaning/index.md
+  - "第 5 章 数据标注：任务、规范与工具": chapters/05-annotation/index.md
+  - "第 6 章 数据标注：质量审核与管理": chapters/06-annotation-qa/index.md
+  - "第 7 章 探索性分析与统计推断": chapters/07-statistics/index.md
+  - "第 8 章 数据可视化与分析报告": chapters/08-visualization/index.md
+  - "第 9 章 建模应用：从 scikit-learn 到预训练模型": chapters/09-modeling/index.md
+  - "第 10 章 推荐系统": chapters/10-recommendation/index.md
+  - "第 11 章 智能系统运维与优化": chapters/11-operations/index.md
+  - "第 12 章 数据伦理、隐私合规与综合项目": chapters/12-ethics-project/index.md
   - 交互动画:
     - sims/index.md
     - "示例动画：点击计数器": sims/example-counter/index.md
@@ -45,7 +56,8 @@ nav:
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md
   - 附录:
-    - "附录 A Python 速查": appendix/a-python.md
-    - "附录 B 工具库速查": appendix/b-libraries.md
+    - "附录 A Python 与 pandas 零基础入门": appendix/a-python.md
+    - "附录 B 常用工具速查": appendix/b-libraries.md
     - "附录 C 实验环境与数据说明": appendix/c-environment.md
     - "附录 D 术语表": appendix/glossary.md
+    - "附录 E 报告与规范模板": appendix/e-templates.md
