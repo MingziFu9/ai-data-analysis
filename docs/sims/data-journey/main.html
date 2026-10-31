@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据的旅程</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+.cards { display:flex; flex-wrap:wrap; gap:6px; min-height:40px; padding:8px; border:1px dashed var(--line); border-radius:8px; }
+.card { padding:5px 9px; border-radius:6px; background:#fff8e1; border:1px solid #ffcc80; cursor:grab; font-size:13px; user-select:none; }
+.card.sel { outline:3px solid var(--accent); }
+.card.right { background:#e8f5e9; border-color:#81c784; }
+.card.wrong { background:#ffebee; border-color:#e57373; }
+.bins { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:10px; }
+@media (max-width:620px) { .bins { grid-template-columns:repeat(2, 1fr); } }
+.bin { border:2px solid var(--line); border-radius:8px; padding:6px; min-height:96px; background:#fafbfc; cursor:pointer; }
+.bin.over { border-color:var(--accent); background:var(--soft); }
+.bin h2 { font-size:13.5px; margin:0 0 4px; color:var(--accent); }
+.bin .hint { font-size:11px; color:var(--muted); margin-bottom:4px; }
+.bin .card { display:inline-block; margin:2px; }
+</style>
+</head>
+<body>
+<h1>数据的旅程：这项工作属于哪个环节？</h1>
+<div class="sub">把上面的 12 项日常工作拖到下面对应的环节里（手机上：先点一张卡片，再点环节）。全部放好后点“检查答案”。</div>
+<div class="cards" id="pool"></div>
+<div class="bins" id="bins"></div>
+<div class="row"><button class="main" id="check">检查答案</button><button id="reset">重新开始</button><button id="show">显示答案</button></div>
+<div class="msg" id="msg"></div>
+<div class="note">六个环节对应本书的章节：采集（第 3 章）、清洗（第 4 章）、标注与审核（第 5、6 章）、分析（第 7、8 章）、建模（第 9、10 章）、上线运维（第 11 章）。真实工作中有些任务横跨两个环节，这里按“主要在做什么”来分。</div>
+<script>
+(function () {
+  var BINS = [
+    ["collect", "采集", "把数据收集到一起"],
+    ["clean", "清洗", "让数据干净、规整"],
+    ["label", "标注与审核", "说明每条数据是什么"],
+    ["analyze", "分析", "数据说明了什么"],
+    ["model", "建模", "训练模型、做预测和推荐"],
+    ["ops", "上线运维", "盯着上线的系统"]
+  ];
+  var CARDS = [
+    ["从订单数据库导出 2025 年全部订单", "collect"],
+    ["调用开放接口，一页一页下载评论", "collect"],
+    ["把“天河区”“天河”统一写成“天河”", "clean"],
+    ["删除完全重复的订单记录", "clean"],
+    ["去掉评论里的广告和乱码", "clean"],
+    ["给 3000 条评论标上好评、中评、差评", "label"],
+    ["抽查 200 条标注，计算标注准确率", "label"],
+    ["画出每月订单量的折线图", "analyze"],
+    ["检验雨天送达时间是否显著变长", "analyze"],
+    ["用标好的评论训练情感分类模型", "model"],
+    ["每周统计模型的调用量和出错次数", "ops"],
+    ["收集模型判错的评论，交回标注组补标", "ops"]
+  ];
+  var place = {}, sel = null;
+  var pool = document.getElementById("pool"), bins = document.getElementById("bins"), msg = document.getElementById("msg");
+  BINS.forEach(function (b) {
+    var d = document.createElement("div");
+    d.className = "bin"; d.dataset.bin = b[0];
+    d.innerHTML = "<h2>" + b[1] + "</h2><div class='hint'>" + b[2] + "</div><div class='in'></div>";
+    d.addEventListener("dragover", function (e) { e.preventDefault(); d.classList.add("over"); });
+    d.addEventListener("dragleave", function () { d.classList.remove("over"); });
+    d.addEventListener("drop", function (e) { e.preventDefault(); d.classList.remove("over"); put(+e.dataTransfer.getData("text"), b[0]); });
+    d.addEventListener("click", function () { if (sel !== null) { put(sel, b[0]); } });
+    bins.appendChild(d);
+  });
+  pool.addEventListener("dragover", function (e) { e.preventDefault(); });
+  pool.addEventListener("drop", function (e) { e.preventDefault(); put(+e.dataTransfer.getData("text"), null); });
+  pool.addEventListener("click", function (e) { if (e.target === pool && sel !== null) put(sel, null); });
+  function put(i, b) { if (b) place[i] = b; else delete place[i]; sel = null; render(); }
+  function render(mark) {
+    pool.innerHTML = "";
+    bins.querySelectorAll(".in").forEach(function (x) { x.innerHTML = ""; });
+    CARDS.forEach(function (c, i) {
+      var el = document.createElement("span");
+      el.className = "card" + (sel === i ? " sel" : "");
+      if (mark && place[i]) el.className += place[i] === c[1] ? " right" : " wrong";
+      el.textContent = c[0]; el.draggable = true;
+      el.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text", i); });
+      el.addEventListener("click", function (e) { e.stopPropagation(); sel = (sel === i ? null : i); render(); });
+      if (place[i]) bins.querySelector("[data-bin=" + place[i] + "] .in").appendChild(el); else pool.appendChild(el);
+    });
+    if (!mark) msg.textContent = Object.keys(place).length + " / " + CARDS.length + " 张已放好";
+  }
+  document.getElementById("check").onclick = function () {
+    var n = Object.keys(place).length, ok = 0;
+    CARDS.forEach(function (c, i) { if (place[i] === c[1]) ok++; });
+    render(true);
+    if (n < CARDS.length) { msg.innerHTML = "还有 " + (CARDS.length - n) + " 张没放。已放的 " + n + " 张中对了 " + ok + " 张（绿色对、红色错）。"; return; }
+    msg.innerHTML = ok === CARDS.length ? "<span class='ok'>全部正确！你已经分得清数据旅程的每一站。</span>"
+      : "对了 <b>" + ok + "</b> / 12 张。红色的卡片再想一想：它主要是在“收集”“整理”“说明是什么”“找规律”“训练模型”还是“盯着上线系统”？";
+  };
+  document.getElementById("reset").onclick = function () { place = {}; sel = null; render(); };
+  document.getElementById("show").onclick = function () { CARDS.forEach(function (c, i) { place[i] = c[1]; }); render(true); msg.textContent = "这是参考答案。"; };
+  render();
+})();
+</script>
+<script src="../common/sim.js"></script>
+</body>
+</html>

@@ -51,7 +51,7 @@ nav:
   - "第 12 章 数据伦理、隐私合规与综合项目": chapters/12-ethics-project/index.md
   - 交互动画:
     - sims/index.md
-    - "示例动画：点击计数器": sims/example-counter/index.md
+    - "数据的旅程": sims/data-journey/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md
