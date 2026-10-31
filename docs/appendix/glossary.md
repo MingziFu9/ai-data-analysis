@@ -66,6 +66,30 @@ description: 本书主要术语的中英文名称、简明定义和例子，按�
 
 | 术语 | 英文 | 定义 | 例子 |
 |---|---|---|---|
+| <span id="g-数据源"></span>数据源 | Data Source | 数据的来处，如业务系统、日志、开放接口、文件、公开数据、网页、传感器 | 订单库、市场部的商家名录、评论开放接口 |
+| <span id="g-数据采集"></span>数据采集 | Data Collection | 按照分析目的，从各种数据源把需要的数据收集过来、保存下来的过程 | 从接口下载 2025 年全部评论存成 CSV |
+| <span id="g-文件编码"></span>文件编码 | Character Encoding | 规定文字和计算机中字节如何一一对应的规则，读文件时用错编码就会出现乱码 | 同一个“食客说”，UTF-8 是 9 个字节，GBK 是 6 个字节 |
+| <span id="g-UTF-8"></span>UTF-8 | UTF-8 | 国际通用的文字编码，能表示几乎所有文字，一个汉字通常占 3 个字节，是 Python 和网页的默认编码 | pd.read_csv 默认按 UTF-8 读文件 |
+| <span id="g-GBK"></span>GBK | GBK | 我国早期的汉字编码，一个汉字占 2 个字节，中文 Windows 的老软件导出的文件常用 | pd.read_csv("商家名录_gbk.csv", encoding="gbk") |
+| <span id="g-乱码"></span>乱码 | Mojibake | 用错误的编码解读文字字节而显示出的无意义字符 | “食客说”按错编码读出来变成“椋熷�㈣��” |
+| <span id="g-JSON"></span>JSON | JavaScript Object Notation | 用花括号表示“键: 值”、方括号表示列表、可以多层嵌套的文本数据格式，接口返回和日志常用 | {"review_id": "R000001", "shop": {"shop_id": "S0017"}} |
+| <span id="g-展平"></span>展平 | Flatten | 把多层嵌套的数据转换成一行一条记录、一列一个字段的二维表 | pd.json_normalize 把 shop 里的 shop_id 展开成 shop.shop_id 列 |
+| <span id="g-Parquet"></span>Parquet | Apache Parquet | 一种按列存储、自带数据类型、自动压缩的数据文件格式，适合存储和分析大量数据 | 订单表存成 Parquet 只有 1.4 MB，CSV 是 4.4 MB |
+| <span id="g-数据库"></span>数据库 | Database | 按一定结构长期存储、统一管理、可供多人同时安全读写的数据集合及其管理系统 | 存放“食客说”全部订单的 MySQL 数据库 |
+| <span id="g-SQL"></span>SQL | Structured Query Language | 结构化查询语言，用来在关系型数据库中查询和管理数据的标准语言 | SELECT 城区, COUNT(*) FROM shops GROUP BY 城区 |
+| <span id="g-SQLite"></span>SQLite | SQLite | 一种轻量级的数据库，整个数据库就是一个文件，Python 自带连接它的 sqlite3 模块 | 随书的 shike.db |
+| <span id="g-应用程序接口"></span>应用程序接口 | Application Programming Interface (API) | 一个系统按约定格式向别的程序提供数据或功能的“窗口”，调用方按接口文档发请求、拿结果 | “食客说”开放平台的评论接口 /api/reviews |
+| <span id="g-HTTP-请求"></span>HTTP 请求 | HTTP Request | 按 HTTP 协议向服务器发出的请求，包括地址、方法、参数和请求头 | requests.get(url, params={"page": 1}, headers={"X-API-Key": "…"}) |
+| <span id="g-状态码"></span>状态码 | Status Code | 服务器对每次 HTTP 请求返回的三位数代码，说明请求的结果；2 开头成功，4 开头是请求方的问题，5 开头是服务器的问题 | 200 成功、401 没有权限、429 请求太频繁、500 服务器错误 |
+| <span id="g-分页"></span>分页 | Pagination | 数据量大时，接口把数据分成若干页，每次请求只返回一页 | 12000 条评论每页 100 条，分 120 页取 |
+| <span id="g-限流"></span>限流 | Rate Limiting | 接口限制每个调用方在一段时间内的请求次数，超过就拒绝，防止服务器被拖垮 | 每秒最多 4 次，超过返回 429 |
+| <span id="g-重试"></span>重试 | Retry | 请求因临时故障或限流失败后，等待一段时间再次请求；连续多次失败则停止并报错 | 第 17 页返回 500，等 2 秒重试成功 |
+| <span id="g-API-密钥"></span>API 密钥 | API Key | 接口用来识别调用者身份和权限的一串字符，相当于钥匙，应放在环境变量中，不能写进公开的代码 | 请求头 X-API-Key: shike-demo-key |
+| <span id="g-采集日志"></span>采集日志 | Collection Log | 采集程序运行时逐条记录的开始时间、采集数量、失败和重试情况的文本，用来事后检查 | “第 17 页第 1 次请求失败，状态码 500，2 秒后重试” |
+| <span id="g-增量采集"></span>增量采集 | Incremental Collection | 只采集上次采集之后新增或变化的数据，而不是每次全部重采 | 用 since 参数只取 2025-12-14 23:38 之后的 774 条新评论 |
+| <span id="g-网络爬虫"></span>网络爬虫 | Web Crawler | 模拟浏览器自动访问网页、下载并提取网页内容的程序 | 用 requests 下载网页、BeautifulSoup 提取标题 |
+| <span id="g-robots-协议"></span>robots 协议 | Robots Exclusion Protocol | 网站在根目录的 robots.txt 中声明允许或不允许爬虫访问哪些页面的约定，2022 年成为互联网标准 RFC 9309 | Disallow: /user/ 表示不允许爬虫访问用户页面 |
+| <span id="g-采集方案"></span>采集方案 | Data Collection Plan | 动手采集前写的说明文档，写明目的、数据、来源、范围、频率、合规措施、质量检查和负责人 | 3.6 节的评论采集方案 |
 
 ## 第 4 章 数据清洗与整合
 
