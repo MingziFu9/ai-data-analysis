@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四种连接方式</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+.stage { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; margin-top:8px; }
+.stage > div { min-width:200px; }
+tr.drop td { opacity:.3; text-decoration:line-through; }
+tr.keep td { background:#e8f5e9; }
+td.nan { color:var(--neg); font-style:italic; }
+</style>
+</head>
+<body>
+<h1>四种连接方式：merge 时对不上的行去哪了？</h1>
+<div class="sub">订单表（左表）按 shop_id 合并商家表（右表）。切换 how 参数，看结果表留下了哪些行。</div>
+<div class="row" id="btns"></div>
+<div class="stage">
+  <div><b>左表：订单</b><table class="t" id="L"></table></div>
+  <div><b>右表：商家</b><table class="t" id="R"></table></div>
+  <div><b>结果表</b> <span id="cnt" class="note"></span><table class="t" id="O"></table></div>
+</div>
+<div class="msg" id="msg"></div>
+<script>
+(function () {
+  var L = [["O001","S01",86.5],["O002","S02",42.0],["O003","S01",120.3],["O004","S09",58.8]];
+  var R = [["S01","天河","川菜"],["S02","越秀","粤菜"],["S03","海珠","快餐"]];
+  var TIP = {
+    inner: "inner（内连接）：只留两边都对得上的行。订单 O004 的 S09 在商家表里找不到，被丢掉；商家 S03 没有订单，也不出现。",
+    left: "left（左连接）：左表订单一行不少。O004 找不到商家，城区和菜系填 NaN（空值）。按订单做统计时最常用。",
+    right: "right（右连接）：右表商家一个不少。S03 没有订单，订单号和金额填 NaN；O004 被丢掉。",
+    outer: "outer（外连接）：两边的行全部保留，对不上的地方都填 NaN。适合检查“两张表到底差了哪些”。"
+  };
+  var how = "left", btns = document.getElementById("btns");
+  ["inner", "left", "right", "outer"].forEach(function (h) {
+    var b = document.createElement("button"); b.textContent = h; b.onclick = function () { how = h; draw(); }; b.id = "b-" + h; btns.appendChild(b);
+  });
+  function cell(v) { return v === null ? '<td class="nan">NaN</td>' : "<td>" + v + "</td>"; }
+  function draw() {
+    ["inner", "left", "right", "outer"].forEach(function (h) { document.getElementById("b-" + h).className = h === how ? "on" : ""; });
+    var shops = {}; R.forEach(function (r) { shops[r[0]] = r; });
+    var used = {}, out = [];
+    L.forEach(function (l) {
+      var r = shops[l[1]];
+      if (r) { used[r[0]] = 1; out.push([l[0], l[1], l[2], r[1], r[2]]); }
+      else if (how === "left" || how === "outer") out.push([l[0], l[1], l[2], null, null]);
+    });
+    if (how === "right" || how === "outer") R.forEach(function (r) { if (!used[r[0]]) out.push([null, r[0], null, r[1], r[2]]); });
+    var keepL = function (l) { return !!shops[l[1]] || how === "left" || how === "outer"; };
+    var keepR = function (r) { return !!used[r[0]] || how === "right" || how === "outer"; };
+    document.getElementById("L").innerHTML = "<tr><th>订单号</th><th>shop_id</th><th>实付</th></tr>" +
+      L.map(function (l) { return '<tr class="' + (keepL(l) ? "keep" : "drop") + '">' + l.map(cell).join("") + "</tr>"; }).join("");
+    document.getElementById("R").innerHTML = "<tr><th>shop_id</th><th>城区</th><th>菜系</th></tr>" +
+      R.map(function (r) { return '<tr class="' + (keepR(r) ? "keep" : "drop") + '">' + r.map(cell).join("") + "</tr>"; }).join("");
+    document.getElementById("O").innerHTML = "<tr><th>订单号</th><th>shop_id</th><th>实付</th><th>城区</th><th>菜系</th></tr>" +
+      out.map(function (o) { return "<tr>" + o.map(cell).join("") + "</tr>"; }).join("");
+    document.getElementById("cnt").textContent = "（" + out.length + " 行）";
+    document.getElementById("msg").innerHTML = TIP[how] + '<br><code>orders.merge(shops, on="shop_id", how="' + how + '")</code>';
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

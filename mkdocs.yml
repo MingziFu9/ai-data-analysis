@@ -52,6 +52,8 @@ nav:
   - 交互动画:
     - sims/index.md
     - "数据的旅程": sims/data-journey/index.md
+    - "四种连接方式": sims/join-types/index.md
+    - "拆分—应用—合并": sims/split-apply-combine/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md

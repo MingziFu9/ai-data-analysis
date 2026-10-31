@@ -79,7 +79,7 @@ def make_users(n=5000):
     return users
 
 
-def make_orders(shops, users, n=60000):
+def make_orders(shops, users, n=80000):
     act = users["活跃度"].to_numpy()
     uid = rng.choice(users.index, n, p=act / act.sum())
     # 用户更常去本区和偏好的菜系；商家受欢迎程度跟品质分有关
@@ -99,7 +99,10 @@ def make_orders(shops, users, n=60000):
     day = rng.integers(0, 365, n)
     date = pd.Timestamp("2025-01-01") + pd.to_timedelta(day, unit="D")
     weekend = date.day_of_week >= 5
-    keep = rng.random(n) < np.where(weekend, 1.0, 0.82)
+    # 季节：2 月春节前后外卖少，暑假和 12 月多；平台全年在增长
+    season = np.array([0.80, 0.62, 0.78, 0.80, 0.85, 0.90, 0.95, 0.95, 0.88, 0.92, 0.97, 1.00])[date.month - 1]
+    growth = 0.85 + 0.15 * day / 364
+    keep = rng.random(n) < np.where(weekend, 1.0, 0.82) * season * growth
     hour = rng.choice(np.arange(24), n, p=_hour_p())
     minute = rng.integers(0, 60, n)
     ts = date + pd.to_timedelta(hour, unit="h") + pd.to_timedelta(minute, unit="m") + pd.to_timedelta(rng.integers(0, 60, n), unit="s")

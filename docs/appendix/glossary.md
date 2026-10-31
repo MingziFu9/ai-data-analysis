@@ -37,6 +37,30 @@ description: 本书主要术语的中英文名称、简明定义和例子，按�
 
 | 术语 | 英文 | 定义 | 例子 |
 |---|---|---|---|
+| <span id="g-变量"></span>变量 | Variable | 给一个值起的名字，用 = 把值存进去，之后用名字取用 | price = 64.9，之后写 price * 0.9 就是打九折的价格 |
+| <span id="g-列表"></span>列表 | List | Python 中按顺序存放多个值的容器，用方括号表示，从 0 开始编号 | districts = ["天河", "越秀", "海珠"]，districts[0] 是“天河” |
+| <span id="g-字典"></span>字典 | Dictionary | Python 中按“键—值”成对存放数据的容器，用花括号表示，通过键取值 | {"订单号": "O000001", "实付金额": 64.9} |
+| <span id="g-函数"></span>函数 | Function | 把一段完成特定功能的代码打包起来、起个名字，用“名字(参数)”调用 | len(districts) 返回列表的长度 3 |
+| <span id="g-库"></span>库 | Library | 别人写好、打包发布的一组功能代码，安装后用 import 导入使用，也叫包 | import pandas as pd |
+| <span id="g-DataFrame"></span>DataFrame | DataFrame | pandas 中的二维表格，有行索引和列名，相当于 Excel 的一个工作表 | pd.read_csv("orders.csv") 读出的订单表 |
+| <span id="g-Series"></span>Series | Series | pandas 中带索引的一列数据，DataFrame 的每一列都是一个 Series | orders["实付金额"] |
+| <span id="g-索引"></span>索引 | Index | DataFrame 或 Series 中用来标识和定位行的标签，默认是 0、1、2…… | 订单表最左边的 0 到 56654 |
+| <span id="g-数据类型"></span>数据类型 | Data Type (dtype) | 一列数据的存储类型，决定了能对它做哪些运算 | int64 整数、float64 小数、str 文字、datetime64 日期时间 |
+| <span id="g-条件筛选"></span>条件筛选 | Boolean Filtering | 用一个或多个条件选出满足条件的行，多个条件用 &（并且）、\|（或者）连接，每个条件加括号 | orders[(orders["天气"] == "雨") & (orders["送达时长"] > 45)] |
+| <span id="g-loc-与-iloc"></span>loc 与 iloc | loc / iloc | pandas 选取行列的两种方式：loc 按标签（索引和列名）选，iloc 按位置（第几行第几列）选 | orders.loc[0:4, ["订单号", "实付金额"]]、orders.iloc[0:5, 0:3] |
+| <span id="g-分组聚合"></span>分组聚合 | Group By | 按某一列的取值把数据分成若干组，对每组分别计算汇总值 | orders.groupby("城区")["实付金额"].sum() |
+| <span id="g-拆分-应用-合并"></span>拆分-应用-合并 | Split-Apply-Combine | 分组聚合的三个步骤：按类别拆成小表，对每张小表计算，再把结果合成一张表 | 按城区拆成 8 张表，各自求平均送达时长，再合成 8 行的结果表 |
+| <span id="g-透视表"></span>透视表 | Pivot Table | 把一个类别放在行、另一个类别放在列，格子里放汇总值的二维汇总表 | 行是城区、列是配送方式、格子是平均送达时长 |
+| <span id="g-交叉表"></span>交叉表 | Crosstab | 统计两个类别变量各种组合出现次数的表格 | 天气 × 是否高峰的订单数 |
+| <span id="g-合并"></span>合并 | Merge | 按一个或多个共同的列（键），把两张表横向连接成一张表，相当于 Excel 的 VLOOKUP | 订单表按“商家编号”合并商家表，得到每笔订单的商家品类 |
+| <span id="g-连接方式"></span>连接方式 | Join Type | 合并两张表时对“对不上”的行的处理方式，有 inner、left、right、outer 四种 | how="left" 保留左表全部订单，找不到商家的格子填空值 |
+| <span id="g-拼接"></span>拼接 | Concatenate | 把结构相同的多张表上下首尾相接（或左右并排）成一张表 | 把 1 月到 12 月的 12 张订单表接成全年订单表 |
+| <span id="g-日期时间类型"></span>日期时间类型 | Datetime | pandas 中表示日期和时间的数据类型，可以直接取出年、月、星期、小时，也能相减算间隔 | pd.to_datetime(orders["下单时间"]).dt.hour 取出下单的小时 |
+| <span id="g-重采样"></span>重采样 | Resample | 把时间序列按新的时间频率重新分组汇总，例如把每笔订单汇总成每天、每周、每月 | orders.resample("D", on="下单时间").size() 得到每天订单数 |
+| <span id="g-NumPy-数组"></span>NumPy 数组 | NumPy Array | NumPy 库提供的同一类型数值组成的多维数组，计算速度很快，pandas 的底层就是它 | np.array([12, 35, 28]) |
+| <span id="g-形状"></span>形状 | Shape | 数组或表格在各个维度上的大小 | 订单表的 shape 是 (56655, 12)，即 56655 行 12 列 |
+| <span id="g-广播"></span>广播 | Broadcasting | 形状不同的数组做运算时，自动把较小的数组扩展成相同形状再逐个计算的规则 | 一整列金额乘以 0.9，0.9 被自动“复制”到每一行 |
+| <span id="g-向量化"></span>向量化 | Vectorization | 对整列或整个数组一次性做运算，代替逐个元素写循环，代码更短、速度快几十到上百倍 | orders["实付金额"] * 0.9 比 for 循环快约 60 倍 |
 
 ## 第 3 章 数据采集：文件、数据库与接口
 
