@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抽检验收模拟</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+svg { width:100%; height:auto; display:block; }
+.lab { display:grid; grid-template-columns:9em 1fr 4em; gap:6px; align-items:center; font-size:13px; }
+.res { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-top:8px; }
+.res div { background:#f5f7fa; border-radius:6px; padding:6px 10px; font-size:12px; }
+.res b { display:block; font-size:20px; }
+</style>
+</head>
+<body>
+<h1>抽检验收模拟：抽多少条才靠得住？</h1>
+<div class="sub">一批 2000 条标注，从中随机抽检 n 条，错误不超过 c 条就判合格（c = n × 5%，即准确率不低于 95%）。拖动滑块，看不同真实错误率下这批被判“合格”的概率。</div>
+<div class="lab"><span>抽检条数 n</span><input type="range" id="n" min="20" max="400" step="10" value="60"><b id="nv"></b></div>
+<div class="lab"><span>这批真实错误率</span><input type="range" id="p" min="0" max="20" step="0.5" value="3.5"><b id="pv"></b></div>
+<svg id="svg" viewBox="0 0 600 260"></svg>
+<div class="res">
+  <div>允许的错误条数 c<b id="c"></b></div>
+  <div>这批被判“合格”的概率<b id="acc"></b></div>
+  <div>模拟 1000 次抽检，判合格<b id="sim"></b></div>
+</div>
+<div class="row"><button class="main" id="run">再模拟 1000 次</button></div>
+<div class="msg" id="msg"></div>
+<div class="note">曲线横轴是这批标注的真实错误率，纵轴是被判合格的概率。理想的验收方法应该像一个台阶：错误率低于 5% 时一定合格，高于 5% 时一定不合格。抽得越多，曲线越陡，越接近台阶。</div>
+<script>
+(function () {
+  var N = 2000;
+  function lgam(x) { var c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5], y = x, t = x + 5.5; t -= (x + 0.5) * Math.log(t); var s = 1.000000000190015; for (var j = 0; j < 6; j++) s += c[j] / ++y; return -t + Math.log(2.5066282746310005 * s / x); }
+  function lc(n, k) { return lgam(n + 1) - lgam(k + 1) - lgam(n - k + 1); }
+  function pAccept(n, c, p) {               // 超几何分布：2000 条中有 D 条错，抽 n 条，错误不超过 c 条的概率
+    var D = Math.round(N * p), s = 0;
+    for (var k = 0; k <= c; k++) { if (k > D || n - k > N - D) continue; s += Math.exp(lc(D, k) + lc(N - D, n - k) - lc(N, n)); }
+    return Math.min(1, s);
+  }
+  function simulate(n, c, p) {
+    var D = Math.round(N * p), ok = 0;
+    for (var t = 0; t < 1000; t++) {
+      var bad = 0, left = N, leftBad = D;
+      for (var i = 0; i < n; i++) { if (Math.random() < leftBad / left) { bad++; leftBad--; } left--; }
+      if (bad <= c) ok++;
+    }
+    return ok;
+  }
+  var ns = document.getElementById("n"), ps = document.getElementById("p"), svg = document.getElementById("svg");
+  function draw() {
+    var n = +ns.value, p = +ps.value / 100, c = Math.floor(n * 0.05 + 1e-9);
+    document.getElementById("nv").textContent = n; document.getElementById("pv").textContent = ps.value + "%";
+    document.getElementById("c").textContent = c + " 条";
+    var h = "", X = function (e) { return 50 + e / 0.2 * 530; }, Y = function (v) { return 230 - v * 210; };
+    h += '<line x1="50" y1="230" x2="580" y2="230" stroke="#90a4ae"/><line x1="50" y1="20" x2="50" y2="230" stroke="#90a4ae"/>';
+    [0, 0.05, 0.1, 0.15, 0.2].forEach(function (e) { h += '<text x="' + X(e) + '" y="248" font-size="11" text-anchor="middle" fill="#78909c">' + e * 100 + "%</text>"; });
+    [0, 0.5, 1].forEach(function (v) { h += '<text x="44" y="' + (Y(v) + 4) + '" font-size="11" text-anchor="end" fill="#78909c">' + v * 100 + "%</text>"; });
+    h += '<path d="M' + X(0) + "," + Y(1) + " L" + X(0.05) + "," + Y(1) + " L" + X(0.05) + "," + Y(0) + " L" + X(0.2) + "," + Y(0) + '" fill="none" stroke="#bdbdbd" stroke-dasharray="4 3"/>';
+    var d = "";
+    for (var e = 0; e <= 0.2001; e += 0.0025) d += (d ? " L" : "M") + X(e).toFixed(1) + "," + Y(pAccept(n, c, e)).toFixed(1);
+    h += '<path d="' + d + '" fill="none" stroke="#3f51b5" stroke-width="2.5"/>';
+    var pa = pAccept(n, c, p);
+    h += '<circle cx="' + X(p) + '" cy="' + Y(pa) + '" r="6" fill="#ef6c00"/>';
+    h += '<text x="' + (X(p) + 8) + '" y="' + (Y(pa) - 8) + '" font-size="12" fill="#ef6c00">' + (pa * 100).toFixed(0) + "%</text>";
+    svg.innerHTML = h;
+    document.getElementById("acc").textContent = (pa * 100).toFixed(1) + "%";
+    var m;
+    if (p <= 0.05) m = "这批其实是合格的，但有 <b>" + ((1 - pa) * 100).toFixed(0) + "%</b> 的可能被误判为不合格而返工（冤枉了标注员）。";
+    else m = "这批其实不合格，但有 <b>" + (pa * 100).toFixed(0) + "%</b> 的可能被误判为合格而放过（错误流进训练数据）。";
+    document.getElementById("msg").innerHTML = m + (n < 100 ? " 抽检条数少时，两种误判都很常见。" : "");
+    document.getElementById("sim").textContent = "…";
+  }
+  function run() { var n = +ns.value, p = +ps.value / 100; document.getElementById("sim").textContent = simulate(n, Math.floor(n * 0.05 + 1e-9), p) + " / 1000 次"; }
+  ns.oninput = ps.oninput = function () { draw(); run(); };
+  document.getElementById("run").onclick = run;
+  draw(); run();
+})();
+</script>
+</body>
+</html>

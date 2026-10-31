@@ -63,7 +63,7 @@
 | [第 3 章 数据采集：文件、数据库与接口](chapters/03-collection/index.md) | 实验 3-1 ★ 多格式文件读取与乱码排查<br>实验 3-2 ★ 从数据库取数<br>实验 3-3 ☆ 调用接口分页采集评论 |
 | [第 4 章 数据清洗与整合](chapters/04-cleaning/index.md) | 实验 4-1 ★ 数据质量评估<br>实验 4-2 ★ 按规范实施清洗<br>实验 4-3 ☆ 清洗流水线与评论文本清洗 |
 | [第 5 章 数据标注：任务、规范与工具](chapters/05-annotation/index.md) | 实验 5-1 ★ 编写评论情感与方面标注规范<br>实验 5-2 ★ 用 Label Studio 标注评论<br>实验 5-3 ☆ 图像目标框标注 |
-| [第 6 章 数据标注：质量审核与管理](chapters/06-annotation-qa/index.md) | 实验 6-1 ★ 实验名称<br>实验 6-2 ★ 实验名称<br>实验 6-3 ★ 实验名称 |
+| [第 6 章 数据标注：质量审核与管理](chapters/06-annotation-qa/index.md) | 实验 6-1 ★ 一致性分析<br>实验 6-2 ★ 抽检验收并写审核报告<br>实验 6-3 ☆ 预标注、主动学习与噪声标签 |
 | [第 7 章 探索性分析与统计推断](chapters/07-statistics/index.md) | 实验 7-1 ★ 实验名称<br>实验 7-2 ★ 实验名称<br>实验 7-3 ★ 实验名称 |
 | [第 8 章 数据可视化与分析报告](chapters/08-visualization/index.md) | 实验 8-1 ★ 实验名称<br>实验 8-2 ★ 实验名称<br>实验 8-3 ★ 实验名称 |
 | [第 9 章 建模应用：从 scikit-learn 到预训练模型](chapters/09-modeling/index.md) | 实验 9-1 ★ 实验名称<br>实验 9-2 ★ 实验名称<br>实验 9-3 ★ 实验名称 |

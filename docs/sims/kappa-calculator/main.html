@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kappa 计算器</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+table.t input { width:52px; text-align:center; font:inherit; border:1px solid var(--line); border-radius:4px; padding:2px; }
+table.t td.diag input { background:#e8f5e9; }
+.res { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-top:8px; }
+.res div { background:#f5f7fa; border-radius:6px; padding:6px 10px; font-size:12px; }
+.res b { display:block; font-size:20px; }
+</style>
+</head>
+<body>
+<h1>Kappa 计算器：一致率高，就一定标得一致吗？</h1>
+<div class="sub">表格的行是标注员甲的标签，列是标注员乙的标签，格子里是条数。绿色对角线是两人一致的。改数字或点下面的例子，看一致率和 Kappa 怎样变。</div>
+<div class="row ex"><span class="lbl">例子：</span>
+<button data-k="ab">实验 6-1 的 A 与 B</button><button data-k="lazy">两人都几乎全标“正面”</button><button data-k="rand">两人随便乱标</button><button data-k="perfect">完全一致</button></div>
+<table class="t" id="tab"></table>
+<div class="res">
+  <div>实际一致率 p<sub>o</sub><b id="po"></b></div>
+  <div>碰巧一致率 p<sub>e</sub><b id="pe"></b></div>
+  <div>Kappa =（p<sub>o</sub> − p<sub>e</sub>）÷（1 − p<sub>e</sub>）<b id="k"></b></div>
+  <div>一致程度<b id="lvl"></b></div>
+</div>
+<div class="msg" id="msg"></div>
+<div class="note">碰巧一致率：假如两个人各自按自己的习惯比例随便标，也会有一部分碰巧相同。比如甲有 90% 标正面、乙也有 90% 标正面，光“碰巧都标正面”就有 0.9 × 0.9 = 81%。Kappa 扣掉了这部分，只看“超出碰巧”的一致。一致程度的划分参考 Landis 和 Koch（1977）。</div>
+<script>
+(function () {
+  var L = ["正面", "负面", "中性"];
+  var EX = {
+    ab: [[135, 6, 17], [7, 46, 12], [8, 8, 61]],
+    lazy: [[176, 6, 6], [6, 0, 0], [6, 0, 0]],
+    rand: [[11, 11, 11], [11, 11, 11], [11, 12, 11]],
+    perfect: [[160, 0, 0], [0, 60, 0], [0, 0, 80]]
+  };
+  var M = EX.ab.map(function (r) { return r.slice(); });
+  function build() {
+    var h = "<tr><th>甲 \\ 乙</th>" + L.map(function (l) { return "<th>" + l + "</th>"; }).join("") + "<th>甲合计</th></tr>";
+    L.forEach(function (l, i) {
+      h += "<tr><th>" + l + "</th>" + L.map(function (_, j) { return '<td class="' + (i === j ? "diag" : "") + '"><input type="number" min="0" data-i="' + i + '" data-j="' + j + '" value="' + M[i][j] + '"></td>'; }).join("") + '<td id="r' + i + '"></td></tr>';
+    });
+    h += "<tr><th>乙合计</th>" + L.map(function (_, j) { return '<td id="c' + j + '"></td>'; }).join("") + '<td id="n"></td></tr>';
+    document.getElementById("tab").innerHTML = h;
+    document.querySelectorAll("#tab input").forEach(function (inp) { inp.oninput = function () { M[+inp.dataset.i][+inp.dataset.j] = Math.max(0, +inp.value || 0); calc(); }; });
+    calc();
+  }
+  function calc() {
+    var n = 0, diag = 0, r = [0, 0, 0], c = [0, 0, 0];
+    for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) { n += M[i][j]; r[i] += M[i][j]; c[j] += M[i][j]; if (i === j) diag += M[i][j]; }
+    for (i = 0; i < 3; i++) { document.getElementById("r" + i).textContent = r[i]; document.getElementById("c" + i).textContent = c[i]; }
+    document.getElementById("n").textContent = n;
+    if (!n) return;
+    var po = diag / n, pe = 0;
+    for (i = 0; i < 3; i++) pe += (r[i] / n) * (c[i] / n);
+    var k = pe === 1 ? 1 : (po - pe) / (1 - pe);
+    document.getElementById("po").textContent = (po * 100).toFixed(1) + "%";
+    document.getElementById("pe").textContent = (pe * 100).toFixed(1) + "%";
+    document.getElementById("k").textContent = k.toFixed(3);
+    var lv = k < 0 ? "比碰巧还差" : k <= 0.2 ? "轻微" : k <= 0.4 ? "一般" : k <= 0.6 ? "中等" : k <= 0.8 ? "较强" : "几乎完全";
+    document.getElementById("lvl").textContent = lv;
+    var m = "";
+    if (po > 0.85 && k < 0.2) m = '<span class="bad">一致率很高，Kappa 却接近 0：两人几乎全标“正面”，一致主要是碰巧。这样的数据训练不出能识别差评的模型。</span>';
+    else if (Math.abs(k) < 0.05) m = "Kappa 接近 0：两人的一致程度和随便乱标差不多。";
+    else if (k >= 0.8) m = '<span class="ok">Kappa 在 0.8 以上，两人的判断高度一致，规范已经比较清楚。</span>';
+    else m = "试着把对角线上的数字改大、其他格子改小，看 Kappa 怎样变化。";
+    document.getElementById("msg").innerHTML = m;
+  }
+  document.querySelectorAll(".ex button").forEach(function (b) { b.onclick = function () { M = EX[b.dataset.k].map(function (r) { return r.slice(); }); build(); }; });
+  build();
+})();
+</script>
+</body>
+</html>

@@ -58,6 +58,8 @@ nav:
     - "正则表达式试验台": sims/regex-lab/index.md
     - "目标框标注与交并比": sims/bbox-iou/index.md
     - "实体标注练习": sims/entity-bio/index.md
+    - "抽检验收模拟": sims/acceptance-sampling/index.md
+    - "Kappa 计算器": sims/kappa-calculator/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md
