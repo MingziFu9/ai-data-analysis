@@ -230,6 +230,31 @@ description: 本书主要术语的中英文名称、简明定义和例子，按�
 
 | 术语 | 英文 | 定义 | 例子 |
 |---|---|---|---|
+| <span id="g-机器学习"></span>机器学习 | Machine Learning | 让计算机从数据中自动找出规律，再用规律对新数据做预测或判断的方法 | 从历史订单学出送达时长的规律 |
+| <span id="g-特征"></span>特征 | Feature | 用来做预测的输入信息，通常是表格中的一列 | 配送距离、是否雨天、是否高峰 |
+| <span id="g-模型"></span>模型 | Model | 算法从训练数据中学到的规律，可以对新数据做预测 | 训练好的送达时长预测模型 |
+| <span id="g-回归"></span>回归 | Regression | 预测一个数值的机器学习任务 | 预测送达时长 |
+| <span id="g-分类"></span>分类 | Classification | 预测属于哪一个类别的机器学习任务 | 判断评论是正面、中性还是负面 |
+| <span id="g-聚类"></span>聚类 | Clustering | 没有标签，把相似的对象自动分成几群的任务 | 把 4670 名用户分成 4 群 |
+| <span id="g-训练集"></span>训练集 | Training Set | 交给算法学习规律的那部分数据 | 80% 的订单，45324 单 |
+| <span id="g-测试集"></span>测试集 | Test Set | 训练时不让模型看到、用来检验模型真实水平的数据 | 20% 的订单，11331 单 |
+| <span id="g-数据泄露"></span>数据泄露 | Data Leakage | 测试集或预测时拿不到的信息在训练时被模型用到，使测试成绩虚高 | 用评论的评分预测评论的情感 |
+| <span id="g-过拟合"></span>过拟合 | Overfitting | 模型把训练集中的偶然细节也学了下来，在训练集上好、在新数据上差 | 训练集准确率 100%，测试集只有 80% |
+| <span id="g-scikit-learn"></span>scikit-learn | scikit-learn | Python 中最常用的机器学习库，各种算法都用 fit、predict 两步调用 | `LinearRegression().fit(X, y)` |
+| <span id="g-流水线"></span>流水线 | Pipeline | 把预处理步骤和模型串成一个整体，一次训练、一次预测 | 标准化 → 线性回归 |
+| <span id="g-标准化"></span>标准化 | Standardization | 把一列数据减去平均值再除以标准差，使各列数值范围相近 | `StandardScaler()` |
+| <span id="g-平均绝对误差"></span>平均绝对误差 | Mean Absolute Error (MAE) | 每个预测值与实际值之差的绝对值的平均数，单位和标签相同 | 送达时长预测平均差 3.45 分钟 |
+| <span id="g-决定系数"></span>决定系数 | Coefficient of Determination (R²) | 衡量回归模型解释了标签多大比例变化的指标，越接近 1 越好 | R² = 0.721 |
+| <span id="g-残差"></span>残差 | Residual | 实际值减去预测值 | 实际 40 分钟、预测 24.9 分钟，残差 15.1 |
+| <span id="g-TF-IDF"></span>TF-IDF | Term Frequency–Inverse Document Frequency | 把文本变成数字的方法：字词在本文中出现越多、在所有文本中越少见，权重越高 | “踩雷”的权重高，“的”的权重低 |
+| <span id="g-逻辑回归"></span>逻辑回归 | Logistic Regression | 输出属于各类别概率的常用分类算法 | 评论情感分类 |
+| <span id="g-混淆矩阵"></span>混淆矩阵 | Confusion Matrix | 把真实类别和预测类别交叉统计的表格，对角线是判对的 | 36 条中性评论被判为负面 |
+| <span id="g-精确率"></span>精确率 | Precision | 模型判为某一类的样本中，真正属于这一类的比例 | 判为负面的评论中 88.0% 真是负面 |
+| <span id="g-召回率"></span>召回率 | Recall | 真正属于某一类的样本中，被模型找出来的比例 | 负面评论中 98.0% 被找出 |
+| <span id="g-RFM-模型"></span>RFM 模型 | RFM Model | 用最近一次消费（R）、消费频率（F）、消费金额（M）衡量用户价值并分群的方法 | 重要价值客户：三项都好 |
+| <span id="g-K-均值"></span>K 均值 | K-means | 先指定群数 K，反复调整使群内对象尽量相似的聚类算法 | `KMeans(n_clusters=4)` |
+| <span id="g-预训练模型"></span>预训练模型 | Pre-trained Model | 已在海量数据上训练好、可以直接使用或稍加训练后使用的模型 | 大众点评评论训练的中文情感模型 |
+| <span id="g-提示词"></span>提示词 | Prompt | 发给大模型的指令文字，说明要做什么、按什么规则、输出什么格式 | 把标注规范写进提示词 |
 
 ## 第 10 章 推荐系统
 
