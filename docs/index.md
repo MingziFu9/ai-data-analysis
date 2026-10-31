@@ -60,8 +60,8 @@
 |---|---|
 | [第 1 章 数据分析与处理概述](chapters/01-overview/index.md) | 实验 1-1 ★ 搭建数据分析环境<br>实验 1-2 ★ 初识“食客说”数据<br>实验 1-3 ☆ 让大模型写分析代码，再找出它的错 |
 | [第 2 章 Python 数据处理入门：从表格到 pandas](chapters/02-pandas/index.md) | 实验 2-1 ★ 用 pandas 做一遍 Excel 里做过的事<br>实验 2-2 ★ 订单数据的合并与分组统计<br>实验 2-3 ☆ 找出订单高峰 |
-| [第 3 章 数据采集：文件、数据库与接口](chapters/03-collection/index.md) | 实验 3-1 ★ 实验名称<br>实验 3-2 ★ 实验名称<br>实验 3-3 ★ 实验名称 |
-| [第 4 章 数据清洗与整合](chapters/04-cleaning/index.md) | 实验 4-1 ★ 实验名称<br>实验 4-2 ★ 实验名称<br>实验 4-3 ★ 实验名称 |
+| [第 3 章 数据采集：文件、数据库与接口](chapters/03-collection/index.md) | 实验 3-1 ★ 多格式文件读取与乱码排查<br>实验 3-2 ★ 从数据库取数<br>实验 3-3 ☆ 调用接口分页采集评论 |
+| [第 4 章 数据清洗与整合](chapters/04-cleaning/index.md) | 实验 4-1 ★ 数据质量评估<br>实验 4-2 ★ 按规范实施清洗<br>实验 4-3 ☆ 清洗流水线与评论文本清洗 |
 | [第 5 章 数据标注：任务、规范与工具](chapters/05-annotation/index.md) | 实验 5-1 ★ 实验名称<br>实验 5-2 ★ 实验名称<br>实验 5-3 ★ 实验名称 |
 | [第 6 章 数据标注：质量审核与管理](chapters/06-annotation-qa/index.md) | 实验 6-1 ★ 实验名称<br>实验 6-2 ★ 实验名称<br>实验 6-3 ★ 实验名称 |
 | [第 7 章 探索性分析与统计推断](chapters/07-statistics/index.md) | 实验 7-1 ★ 实验名称<br>实验 7-2 ★ 实验名称<br>实验 7-3 ★ 实验名称 |
