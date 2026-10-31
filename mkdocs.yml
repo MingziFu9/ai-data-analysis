@@ -65,6 +65,7 @@ nav:
     - "图表选择与纠错": sims/chart-chooser/index.md
     - "RFM 分群": sims/rfm-segments/index.md
     - "协同过滤计算器": sims/item-cf/index.md
+    - "数据漂移与 PSI": sims/drift-psi/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md

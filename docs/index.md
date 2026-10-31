@@ -68,7 +68,7 @@
 | [第 8 章 数据可视化与分析报告](chapters/08-visualization/index.md) | 实验 8-1 ★ 常用图表与误导性图表纠错<br>实验 8-2 ★ 交互图表与经营看板<br>实验 8-3 ☆ Streamlit 看板与数据分析报告 |
 | [第 9 章 建模应用：从 scikit-learn 到预训练模型](chapters/09-modeling/index.md) | 实验 9-1 ★ 流水线建模与测试报告<br>实验 9-2 ★ RFM 用户分群<br>实验 9-3 ☆ 用模型和大模型做预标注 |
 | [第 10 章 推荐系统](chapters/10-recommendation/index.md) | 实验 10-1 ★ 热门推荐与基于内容的推荐<br>实验 10-2 ★ 基于物品的协同过滤与离线评估<br>实验 10-3 ☆ 矩阵分解与冷启动 |
-| [第 11 章 智能系统运维与优化](chapters/11-operations/index.md) | 实验 11-1 ★ 实验名称<br>实验 11-2 ★ 实验名称<br>实验 11-3 ★ 实验名称 |
+| [第 11 章 智能系统运维与优化](chapters/11-operations/index.md) | 实验 11-1 ★ 分析模型服务日志<br>实验 11-2 ★ 检测数据漂移<br>实验 11-3 ☆ 坏案例归因与优化需求 |
 | [第 12 章 数据伦理、隐私合规与综合项目](chapters/12-ethics-project/index.md) | 实验 12-1 ★ 实验名称<br>实验 12-2 ★ 实验名称<br>实验 12-3 ★ 实验名称 |
 
 附录：[A Python 与 pandas 零基础入门](appendix/a-python.md) · [B 常用工具速查](appendix/b-libraries.md) · [C 实验环境与数据说明](appendix/c-environment.md) · [D 术语表](appendix/glossary.md) · [E 报告与规范模板](appendix/e-templates.md)

@@ -52,7 +52,7 @@ for _, r in todo.iterrows():
                      "大模型_方面": "|".join(out.get("方面", [])), "大模型_菜品": "|".join(out.get("菜品", []))})
     except Exception as e:                       # 网络错误、返回的不是 JSON 等，记下来人工处理
         rows.append({"review_id": r["review_id"], "大模型_情感": "出错：" + str(e)[:30]})
-    time.sleep(0.5)                              # 放慢速度，避免触发限流（3.5 节）
+    time.sleep(0.5)                              # 放慢速度，避免触发限流（3.4.4 节）
 res = pd.DataFrame(rows)
 ref = pd.read_csv(DATA / "reviews_参考答案.csv")
 res = res.merge(ref, on="review_id")
