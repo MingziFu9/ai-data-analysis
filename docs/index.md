@@ -37,19 +37,19 @@
 |---|---|---|---|---|---|---|
 | [第 1 章](chapters/01-overview/index.md) | 1.0 万 | 3 | 23（18） | 19 | 8 | 1 |
 | [第 2 章](chapters/02-pandas/index.md) | 0.6 万 | 3 | 23（18） | 24 | 6 | 2 |
-| [第 3 章](chapters/03-collection/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 4 章](chapters/04-cleaning/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 5 章](chapters/05-annotation/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 6 章](chapters/06-annotation-qa/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 7 章](chapters/07-statistics/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 8 章](chapters/08-visualization/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 9 章](chapters/09-modeling/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 10 章](chapters/10-recommendation/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 11 章](chapters/11-operations/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| [第 12 章](chapters/12-ethics-project/index.md) | 0.1 万 | 3 | 5（3） | 0 | 1 | 0 |
-| **合计** | **2.3 万** | **36** | **96（66）** | **43** | **24** | **3** |
+| [第 3 章](chapters/03-collection/index.md) | 0.7 万 | 3 | 23（18） | 24 | 8 | 0 |
+| [第 4 章](chapters/04-cleaning/index.md) | 0.7 万 | 3 | 23（18） | 22 | 8 | 2 |
+| [第 5 章](chapters/05-annotation/index.md) | 0.9 万 | 3 | 23（18） | 21 | 6 | 2 |
+| [第 6 章](chapters/06-annotation-qa/index.md) | 0.8 万 | 3 | 23（18） | 19 | 8 | 2 |
+| [第 7 章](chapters/07-statistics/index.md) | 0.6 万 | 3 | 23（18） | 24 | 5 | 2 |
+| [第 8 章](chapters/08-visualization/index.md) | 0.5 万 | 3 | 23（18） | 24 | 7 | 1 |
+| [第 9 章](chapters/09-modeling/index.md) | 0.5 万 | 3 | 23（18） | 25 | 4 | 1 |
+| [第 10 章](chapters/10-recommendation/index.md) | 0.7 万 | 3 | 23（18） | 20 | 4 | 1 |
+| [第 11 章](chapters/11-operations/index.md) | 0.7 万 | 3 | 23（18） | 18 | 3 | 1 |
+| [第 12 章](chapters/12-ethics-project/index.md) | 0.8 万 | 3 | 23（18） | 15 | 5 | 1 |
+| **合计** | **8.5 万** | **36** | **276（216）** | **255** | **72** | **16** |
 
-正文字数只统计汉字，不含代码和课后练习；单选、多选和判断题可以在网页上直接作答。配套学习资源：[交互动画](sims/index.md) 3 个 · [学习图谱](learning-graph/index.md) 2 个概念 · [常见问题](faq/index.md) 2 问 · [术语表](appendix/glossary.md) 43 条。
+正文字数只统计汉字，不含代码和课后练习；单选、多选和判断题可以在网页上直接作答。配套学习资源：[交互动画](sims/index.md) 16 个 · [学习图谱](learning-graph/index.md) 255 个概念 · [常见问题](faq/index.md) 44 问 · [术语表](appendix/glossary.md) 255 条。
 
 <!-- stats:end -->
 

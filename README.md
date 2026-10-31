@@ -1,35 +1,26 @@
-# 人工智能技术应用专业网络教材模板
+# 人工智能数据分析与处理
 
-这是人工智能技术应用专业（成人大专）系列网络教材的公共模板，从《自然语言处理导论》（https://mingzifu9.github.io/nlp-textbook/ ）提炼而来。每门课从这个模板新建一个仓库，网页样式、在线答题、交互动画框架、学习图谱和维护脚本都已经配好，只需要写内容。
+面向成人教育人工智能技术应用专业（专科）的《人工智能数据分析与处理》网络教材，从系列模板 `ai-textbook-template` 生成。网页版：https://mingzifu9.github.io/ai-data-analysis/
 
-## 模板里有什么
+- 4 学分，72 学时（线上理论 40 + 线上实验 18 + 线下理论 14），第 4 学期，期末开卷
+- 12 章，每章 3 个实验，共 36 个；面向几乎没有编程经验的学生，★ 实验给出完整代码，读懂、运行、改参数
+- 贯穿案例：虚构的广州美食点评平台“食客说”，数据由 `labs/data/make_datasets.py` 生成
+- 对应证书：人工智能训练师（四级）、人工智能数据处理工程师（中级）、Python 技术应用工程师（中级），见 `docs/certificate.md`
+- 动笔和修改前先读 `编写规范.md`
+
+## 目录结构
 
 | 路径 | 内容 |
 |---|---|
-| `course.yml` | **课程配置**：书名、学分学时、章节、附录、证书。改完运行 `python tools/course.py sync`，导航、首页、章节骨架等自动更新 |
-| `编写规范.md` | **动笔前先读**：一章的结构、篇幅、实验、题型、文献、动画、术语表和配套资源的统一要求 |
-| `系列公共术语表.md` | 七门课共用的 91 个术语，统一译名和定义 |
-| `docs/chapters/01-sample/` | 示例章，演示每一种元素的写法；写第一章时整章替换 |
-| `docs/sims/` | 交互动画，`common/` 是公共样式和脚本，`example-counter/` 是示例 |
-| `docs/learning-graph/` | 学习图谱（概念和先修关系写在 `data.js`） |
-| `docs/certificate.md` | 证书考点对照页，没有对应证书的课程从 nav 里删掉 |
-| `docs/appendix/` | 附录 A Python 速查、B 工具库速查、C 实验环境与数据说明、D 术语表 |
-| `labs/` | 实验代码（按章分目录）、数据和 `requirements.txt` |
-| `slides/` | 每章课件底稿 `chNN.md`，写法见 `slides/README.md` |
-| `lesson-plans/` | 每章教案底稿 `chNN.yml`，写法见 `lesson-plans/README.md` |
-| `tools/` | 维护脚本，见下文 |
-| `.github/workflows/pages.yml` | 推送到 `main` 后自动发布到 GitHub Pages |
-| `.github/workflows/exports.yml` | 手动运行（或推送 `v1.0` 这样的标签），在 GitHub 上生成全部课件、教案和 Word/PDF 版供下载 |
-
-## 用模板新建一门课
-
-1. 在 GitHub 上打开本仓库，点 **Use this template → Create a new repository**，仓库名用课程的英文短名，例如 `ml-textbook`。
-2. 新仓库的 **Settings → Pages → Source** 选 **GitHub Actions**。
-3. 按大纲填写 `course.yml`（书名、仓库名、学分学时、各章目录名和标题、证书），运行 `python tools/course.py sync`：`mkdocs.yml` 的站点名和导航、首页课程信息和目录、术语表各章小节、学习图谱章节列表都会更新，还没有的章节按统一体例生成骨架。以后改章名、加章节、加动画，都是改完再 sync 一次。
-4. 手动修改 `docs/index.md` 的简介、`docs/course-description.md`、`docs/certificate.md`；本 README 改写成本课的说明。写完第 1 章后删掉 `01-sample`和 `docs/sims/example-counter/` 里的示例内容。课件和教案底稿用 `make_slides.py draft N`、`make_lesson_plan.py draft N` 生成，格式示范见模板包的 `示例输出/`。
-5. 推送到 `main`，几分钟后网页出现在 `https://<用户名>.github.io/<仓库名>/`。
-
-没有实验的课（如导论）：`course.yml` 里把 `lab_section` 改成“在线体验”、`lab_word` 改成“体验”、`frontier_title` 改成“身边的 AI”，章节骨架、首页目录和统计会跟着用这些叫法。
+| `course.yml` | 课程配置（书名、学时、章节、证书），改完运行 `python tools/course.py sync` |
+| `docs/chapters/` | 各章正文，目录名 `NN-英文短名` |
+| `docs/appendix/` | 附录 A 零基础入门、B 工具速查、C 实验环境与数据、D 术语表、E 报告与规范模板 |
+| `docs/sims/` | 16 个交互动画，公共样式在 `common/` |
+| `docs/learning-graph/` | 学习图谱（`data.js`），`concepts-draft.csv` 是概念与先修关系表 |
+| `docs/faq/`、`docs/certificate.md`、`docs/mock-exam.md` | 常见问题、证书考点对照、在线模拟卷 |
+| `labs/` | 按章存放的实验代码；`labs/data/` 为数据，见 `labs/data/README.md` |
+| `slides/`、`lesson-plans/` | 课件和教案的底稿 |
+| `tools/` | 维护脚本 |
 
 ## 维护脚本
 
@@ -37,7 +28,9 @@
 python tools/glossary_links.py anchors     # 给术语表每个术语加锚点
 python tools/glossary_links.py link 03     # 第 3 章正文中的术语改成悬停可见定义的链接
 python tools/glossary_links.py concepts 03 # 生成第 3 章的“本章概念清单”
+python tools/build_graph.py                # 由概念表和术语表生成学习图谱 data.js
 python tools/graph_text.py                 # 检查学习图谱并生成文字版
+python tools/make_mock_exam.py             # 从各章课后练习组成两套在线模拟卷 docs/mock-exam.md
 python tools/book_stats.py                 # 更新首页“全书概览”统计表
 python tools/course.py sync                # 按 course.yml 更新导航、首页、章节骨架等
 python tools/course.py new-sim 名称 3 "标题" # 新建第 3 章的交互动画骨架

@@ -1,8 +1,8 @@
 # 《人工智能数据分析与处理》实验环境（编者 2026 年 10 月在 Python 3.11 上实测通过的版本）
 # 安装：pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 版本号写“至少”，装更新的小版本一般也能运行；运行结果以教材正文为准，个别小数位可能略有不同
-pandas>=3.0          # 编者用 3.0.5，第 2 章起天天用
-numpy>=2.0           # 2.5.3
+pandas>=3.0          # 编者用 3.1.0，第 2 章起天天用
+numpy>=2.0           # 2.4.6
 matplotlib>=3.9      # 3.11.2，第 7、8 章画图
 seaborn>=0.13        # 0.13.2，第 8 章
 scipy>=1.13          # 1.17.1，第 7 章假设检验
@@ -13,6 +13,7 @@ cleanlab>=2.6        # 2.9.0，第 6 章找疑似标错的样本
 pyecharts>=2.0       # 2.1.0，第 8 章交互图表
 streamlit>=1.40      # 1.66.1，第 8 章数据看板
 requests>=2.31       # 2.34.2，第 3 章接口采集、第 9 章调用大模型
+jieba>=0.42           # 0.42.1，中文分词（实验 1-1 环境自检会检查）
 openpyxl>=3.1        # 3.1.5，读写 Excel
 pyarrow>=15          # 26.0.0，第 3 章 Parquet 文件
 jupyter              # 1.1.1，想用 Notebook 时再装也可以

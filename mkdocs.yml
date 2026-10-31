@@ -69,6 +69,7 @@ nav:
     - "数据脱敏演示": sims/data-masking/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
+  - "在线模拟卷": mock-exam.md
   - 证书考点对照: certificate.md
   - 附录:
     - "附录 A Python 与 pandas 零基础入门": appendix/a-python.md
