@@ -1,0 +1,21 @@
+<View>
+  <Header value="请阅读评论，完成三项标注（标注规范见 标注规范_v1.0.md）"/>
+  <Labels name="entity" toName="text">
+    <Label value="菜品" background="#ffa726" hotkey="d"/>
+  </Labels>
+  <Text name="text" value="$text"/>
+  <Header value="1. 整体情感（单选）"/>
+  <Choices name="sentiment" toName="text" choice="single" showInline="true" required="true">
+    <Choice value="正面" hotkey="1"/>
+    <Choice value="负面" hotkey="2"/>
+    <Choice value="中性" hotkey="3"/>
+  </Choices>
+  <Header value="2. 评论涉及的方面（可多选）"/>
+  <Choices name="aspect" toName="text" choice="multiple" showInline="true">
+    <Choice value="口味"/>
+    <Choice value="服务"/>
+    <Choice value="环境"/>
+    <Choice value="价格"/>
+    <Choice value="配送"/>
+  </Choices>
+</View>

@@ -1,0 +1,9 @@
+<View>
+  <Header value="把图中每一个碗、盘子、杯子都框出来，框要贴紧物体边缘"/>
+  <RectangleLabels name="label" toName="image">
+    <Label value="碗" background="#42a5f5" hotkey="1"/>
+    <Label value="盘子" background="#66bb6a" hotkey="2"/>
+    <Label value="杯子" background="#ef5350" hotkey="3"/>
+  </RectangleLabels>
+  <Image name="image" value="$image" zoom="true"/>
+</View>

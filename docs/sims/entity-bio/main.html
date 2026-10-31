@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实体标注练习</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+.sent { font-size:22px; letter-spacing:2px; padding:10px; border:1px solid var(--line); border-radius:8px; user-select:none; line-height:2; }
+.ch { display:inline-block; padding:0 2px; cursor:pointer; border-radius:3px; }
+.ch.sel { background:#fff59d; }
+.ch.e-菜品 { background:#ffcc80; } .ch.e-店名 { background:#90caf9; }
+.ch.wrong { outline:2px solid var(--neg); }
+.bio { display:flex; flex-wrap:wrap; gap:3px; margin-top:8px; }
+.bio div { text-align:center; font-size:12px; border:1px solid var(--line); border-radius:4px; padding:2px 4px; min-width:42px; }
+.bio b { display:block; font-size:16px; }
+.bio .B { background:#ffe0b2; } .bio .I { background:#fff3e0; }
+</style>
+</head>
+<body>
+<h1>实体标注练习：划出菜品和店名，看 BIO 序列怎么来</h1>
+<div class="sub">先选标签，再在句子上点第一个字、再点最后一个字，就标好一个实体。点已标的字可以取消。标完点“对答案”。</div>
+<div class="row"><span>标签：</span><button id="l-菜品" class="on">菜品</button><button id="l-店名">店名</button>
+<span style="flex:1"></span><button id="prev">上一句</button><span id="no"></span><button id="next">下一句</button></div>
+<div class="sent" id="sent"></div>
+<div class="row"><button class="main" id="check">对答案</button><button id="clear">清空</button></div>
+<div class="msg" id="msg"></div>
+<div class="box"><h2>自动生成的 BIO 序列</h2><div class="bio" id="bio"></div>
+<div class="note">B-菜品：菜品的第一个字；I-菜品：菜品的其余字；O：不属于任何实体。模型训练时就是逐字学习这一串标签。</div></div>
+<script>
+(function () {
+  var DATA = [
+    ["骑手送错地址。三文鱼刺身味道很正宗", [[7, 12, "菜品"]]],
+    ["福坊川菜（天河店）的水煮鱼鲜嫩入味，麻婆豆腐也不错", [[0, 9, "店名"], [10, 13, "菜品"], [18, 22, "菜品"]]],
+    ["奶茶一绝，回味无穷！服务周到，主动加茶", [[0, 2, "菜品"]]],
+    ["口味不行，不过价格实惠，失望", []],
+    ["在大味火锅（天河店）点了毛肚和鸭肠，毛肚不新鲜", [[1, 10, "店名"], [12, 14, "菜品"], [15, 17, "菜品"], [18, 20, "菜品"]]]
+  ];
+  var idx = 0, label = "菜品", tags = [], start = null;
+  function el(id) { return document.getElementById(id); }
+  ["菜品", "店名"].forEach(function (l) { el("l-" + l).onclick = function () { label = l; el("l-菜品").className = l === "菜品" ? "on" : ""; el("l-店名").className = l === "店名" ? "on" : ""; }; });
+  function load() { tags = DATA[idx][0].split("").map(function () { return "O"; }); start = null; el("msg").textContent = ""; el("no").textContent = (idx + 1) + " / " + DATA.length; draw(); }
+  function draw(wrong) {
+    var s = DATA[idx][0];
+    el("sent").innerHTML = s.split("").map(function (c, i) {
+      var t = tags[i], cls = "ch" + (t !== "O" ? " e-" + t.slice(2) : "") + (start === i ? " sel" : "") + (wrong && wrong[i] ? " wrong" : "");
+      return '<span class="' + cls + '" data-i="' + i + '">' + c + "</span>";
+    }).join("");
+    el("bio").innerHTML = s.split("").map(function (c, i) { return '<div class="' + tags[i][0] + '"><b>' + c + "</b>" + tags[i] + "</div>"; }).join("");
+  }
+  el("sent").onclick = function (e) {
+    var i = e.target.dataset && e.target.dataset.i; if (i === undefined) return; i = +i;
+    if (tags[i] !== "O" && start === null) {             // 取消整个实体
+      var a = i, b = i; while (a > 0 && tags[a][0] === "I") a--; b = a + 1; while (b < tags.length && tags[b][0] === "I") b++;
+      for (var k = a; k < b; k++) tags[k] = "O"; draw(); return;
+    }
+    if (start === null) { start = i; draw(); return; }
+    var lo = Math.min(start, i), hi = Math.max(start, i);
+    for (var j = lo; j <= hi; j++) tags[j] = (j === lo ? "B-" : "I-") + label;
+    start = null; draw();
+  };
+  el("check").onclick = function () {
+    var s = DATA[idx][0], ans = s.split("").map(function () { return "O"; }), wrong = {}, n = 0;
+    DATA[idx][1].forEach(function (e) { for (var j = e[0]; j < e[1]; j++) ans[j] = (j === e[0] ? "B-" : "I-") + e[2]; });
+    ans.forEach(function (a, i) { if (a !== tags[i]) { wrong[i] = 1; n++; } });
+    draw(wrong);
+    var ents = DATA[idx][1].map(function (e) { return s.slice(e[0], e[1]) + "（" + e[2] + "）"; }).join("、") || "这一句没有实体";
+    el("msg").innerHTML = n === 0 ? '<span class="ok">全对！</span> 参考答案：' + ents : '<span class="bad">有 ' + n + " 个字的标签和参考答案不同（红框）。</span> 参考答案：" + ents +
+      (idx === 1 ? "。按本书规范，店名要连同括号里的分店名一起标。" : "") + (idx === 4 ? "。同一个菜品出现两次，两次都要标。" : "");
+  };
+  el("clear").onclick = load;
+  el("prev").onclick = function () { idx = (idx + DATA.length - 1) % DATA.length; load(); };
+  el("next").onclick = function () { idx = (idx + 1) % DATA.length; load(); };
+  load();
+})();
+</script>
+</body>
+</html>

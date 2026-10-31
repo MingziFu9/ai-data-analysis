@@ -450,7 +450,7 @@ def main():
     # ---- 第 5、6 章：标注 ----
     ann = OUT / "annotation"
     ann.mkdir(exist_ok=True)
-    reviews.sample(n=100, random_state=5)[["review_id", "评论内容"]].to_csv(ann / "to_label_100.csv", index=False, encoding="utf-8-sig")
+    reviews.sample(n=100, random_state=5)[["review_id", "评论内容"]].rename(columns={"评论内容": "text"}).to_csv(ann / "to_label_100.csv", index=False, encoding="utf-8-sig")
     make_annotators(reviews).to_csv(ann / "three_annotators.csv", index=False, encoding="utf-8-sig")
     make_batch(reviews).to_csv(ann / "batch_2000.csv", index=False, encoding="utf-8-sig")
     draw_tables()
