@@ -60,6 +60,8 @@ nav:
     - "实体标注练习": sims/entity-bio/index.md
     - "抽检验收模拟": sims/acceptance-sampling/index.md
     - "Kappa 计算器": sims/kappa-calculator/index.md
+    - "A/B 测试判读": sims/ab-test/index.md
+    - "抽样与置信区间": sims/confidence-interval/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md

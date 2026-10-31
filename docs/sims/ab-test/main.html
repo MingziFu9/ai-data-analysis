@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A/B 测试判读</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+svg { width:100%; height:auto; display:block; }
+.lab { display:grid; grid-template-columns:10em 1fr 5em; gap:6px; align-items:center; font-size:13px; }
+.res { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-top:8px; }
+.res div { background:#f5f7fa; border-radius:6px; padding:6px 10px; font-size:12px; }
+.res b { display:block; font-size:18px; }
+</style>
+</head>
+<body>
+<h1>A/B 测试判读：差多少、测多少人，才能下结论？</h1>
+<div class="sub">A 是旧版商家页面，B 是新版。调整每组的访客数和两组的下单转化率，看差值的置信区间和 p 值，以及该下什么结论。</div>
+<div class="lab"><span>每组访客数</span><input type="range" id="n" min="500" max="30000" step="500" value="10000"><b id="nv"></b></div>
+<div class="lab"><span>A 组转化率</span><input type="range" id="pa" min="1" max="20" step="0.1" value="7.4"><b id="pav"></b></div>
+<div class="lab"><span>B 组转化率</span><input type="range" id="pb" min="1" max="20" step="0.1" value="8.7"><b id="pbv"></b></div>
+<svg id="svg" viewBox="0 0 600 110"></svg>
+<div class="res">
+  <div>B − A<b id="d"></b></div>
+  <div>95% 置信区间<b id="ci"></b></div>
+  <div>p 值<b id="p"></b></div>
+</div>
+<div class="msg" id="msg"></div>
+<div class="note">默认值接近实验 7-3 的结果（每组约 1 万人，A 7.4%，B 8.7%）。图中横线是 B − A 的 95% 置信区间，竖线是 0：区间整个在 0 的右边，说明 B 显著更好；跨过 0，说明还不能下结论。</div>
+<script>
+(function () {
+  function phi(x) { var t = 1 / (1 + 0.2316419 * Math.abs(x)), d = 0.3989423 * Math.exp(-x * x / 2); var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return x > 0 ? 1 - p : p; }
+  var n = document.getElementById("n"), pa = document.getElementById("pa"), pb = document.getElementById("pb");
+  function draw() {
+    var N = +n.value, a = +pa.value / 100, b = +pb.value / 100, d = b - a;
+    document.getElementById("nv").textContent = N; document.getElementById("pav").textContent = pa.value + "%"; document.getElementById("pbv").textContent = pb.value + "%";
+    var se = Math.sqrt(a * (1 - a) / N + b * (1 - b) / N), lo = d - 1.96 * se, hi = d + 1.96 * se;
+    var pp = (a * N + b * N) / (2 * N), se0 = Math.sqrt(pp * (1 - pp) * 2 / N), z = d / se0, p = 2 * (1 - phi(Math.abs(z)));
+    document.getElementById("d").textContent = (d * 100 >= 0 ? "+" : "") + (d * 100).toFixed(2) + " 个百分点";
+    document.getElementById("ci").textContent = "[" + (lo * 100).toFixed(2) + ", " + (hi * 100).toFixed(2) + "]";
+    document.getElementById("p").textContent = p < 0.001 ? "< 0.001" : p.toFixed(3);
+    var X = function (v) { return 300 + v * 100 * 40; }, h = "";
+    for (var v = -6; v <= 6; v += 2) h += '<text x="' + X(v / 100) + '" y="100" font-size="11" text-anchor="middle" fill="#78909c">' + (v > 0 ? "+" : "") + v + "</text>";
+    h += '<line x1="' + X(0) + '" x2="' + X(0) + '" y1="10" y2="85" stroke="#90a4ae" stroke-dasharray="4 3"/>';
+    var col = lo > 0 ? "#43a047" : hi < 0 ? "#e53935" : "#ef6c00";
+    h += '<line x1="' + Math.max(5, X(lo)) + '" x2="' + Math.min(595, X(hi)) + '" y1="48" y2="48" stroke="' + col + '" stroke-width="6" stroke-linecap="round"/>';
+    h += '<circle cx="' + X(d) + '" cy="48" r="7" fill="#fff" stroke="' + col + '" stroke-width="3"/>';
+    h += '<text x="300" y="20" font-size="12" text-anchor="middle" fill="#78909c">B − A（百分点）</text>';
+    document.getElementById("svg").innerHTML = h;
+    var m;
+    if (lo > 0) m = '<span class="ok">B 显著优于 A</span>：区间整个大于 0，p < 0.05。还要再问一句：提升 ' + (d * 100).toFixed(2) + " 个百分点，值不值得上线新版？";
+    else if (hi < 0) m = '<span class="bad">B 显著差于 A</span>：区间整个小于 0。';
+    else m = '<span style="color:var(--warn)">还不能下结论</span>：区间跨过了 0，p ≥ 0.05。这不等于“两版一样好”，可能是差别太小或访客太少。试着把访客数调大。';
+    document.getElementById("msg").innerHTML = m;
+  }
+  n.oninput = pa.oninput = pb.oninput = draw;
+  draw();
+})();
+</script>
+</body>
+</html>

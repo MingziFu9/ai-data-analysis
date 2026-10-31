@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抽样与置信区间</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+svg { width:100%; height:auto; display:block; }
+.lab { display:grid; grid-template-columns:7em 1fr 4em; gap:6px; align-items:center; font-size:13px; }
+</style>
+</head>
+<body>
+<h1>抽样与置信区间：100 个区间里，有几个盖住了真值？</h1>
+<div class="sub">总体是“食客说”2025 年全部 56655 笔订单的送达时长，真实平均 28.29 分钟（绿线）。每次随机抽 n 单，算出样本平均值和置信区间（一条横线）。盖住真值的是蓝色，没盖住的是红色。</div>
+<div class="lab"><span>每次抽 n 单</span><input type="range" id="n" min="10" max="500" step="10" value="50"><b id="nv"></b></div>
+<div class="lab"><span>置信水平</span><input type="range" id="cl" min="0" max="2" step="1" value="1"><b id="clv"></b></div>
+<div class="row"><button class="main" id="go">再抽 100 次</button></div>
+<svg id="svg" viewBox="0 0 600 420"></svg>
+<div class="msg" id="msg"></div>
+<div class="note">95% 置信区间的意思是：如果反复抽样很多次，每次都这样算一个区间，大约 95% 的区间会盖住真值。对某一次抽样来说，真值要么在区间里，要么不在；我们只是有 95% 的把握。抽得越多，区间越窄；要求的把握越大，区间越宽。</div>
+<script>
+(function () {
+  var V = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71], C = [123, 88, 128, 208, 292, 477, 607, 736, 981, 1240, 1423, 1712, 1870, 2121, 2292, 2538, 2585, 2702, 2748, 2794, 2681, 2667, 2510, 2530, 2295, 2140, 1943, 1674, 1593, 1371, 1211, 1044, 944, 770, 633, 590, 441, 354, 315, 222, 207, 188, 124, 111, 76, 63, 66, 52, 35, 32, 21, 15, 25, 13, 8, 6, 6, 3, 3, 3, 2, 1, 2], MU = 28.29, cum = [], tot = 0;
+  C.forEach(function (c) { tot += c; cum.push(tot); });
+  function draw1() { var r = Math.random() * tot, lo = 0, hi = cum.length - 1; while (lo < hi) { var m = (lo + hi) >> 1; if (cum[m] > r) hi = m; else lo = m + 1; } return V[lo]; }
+  var Z = [[1.645, "90%"], [1.96, "95%"], [2.576, "99%"]];
+  var ns = document.getElementById("n"), cl = document.getElementById("cl"), svg = document.getElementById("svg");
+  function run() {
+    var n = +ns.value, z = Z[+cl.value][0], h = "", miss = 0;
+    document.getElementById("nv").textContent = n; document.getElementById("clv").textContent = Z[+cl.value][1];
+    var X = function (v) { return 40 + (v - 18) / 20 * 540; };
+    for (var v = 18; v <= 38; v += 2) h += '<text x="' + X(v) + '" y="415" font-size="11" text-anchor="middle" fill="#78909c">' + v + "</text>";
+    for (var i = 0; i < 100; i++) {
+      var s = 0, s2 = 0;
+      for (var k = 0; k < n; k++) { var x = draw1(); s += x; s2 += x * x; }
+      var m = s / n, sd = Math.sqrt((s2 - n * m * m) / (n - 1)), e = z * sd / Math.sqrt(n);
+      var ok = m - e <= MU && MU <= m + e; if (!ok) miss++;
+      var y = 8 + i * 3.95, col = ok ? "#5c6bc0" : "#e53935";
+      h += '<line x1="' + Math.max(40, X(m - e)) + '" x2="' + Math.min(580, X(m + e)) + '" y1="' + y + '" y2="' + y + '" stroke="' + col + '" stroke-width="2"/>';
+      h += '<circle cx="' + X(m) + '" cy="' + y + '" r="1.6" fill="' + col + '"/>';
+    }
+    h += '<line x1="' + X(MU) + '" x2="' + X(MU) + '" y1="2" y2="402" stroke="#2e7d32" stroke-width="2"/>';
+    svg.innerHTML = h;
+    document.getElementById("msg").innerHTML = "这 100 个区间中，<b>" + (100 - miss) + "</b> 个盖住了真值，<b class=\"bad\">" + miss + "</b> 个没盖住（理论上约 " + Math.round(100 - parseFloat(Z[+cl.value][1])) + " 个）。";
+  }
+  ns.oninput = cl.oninput = run;
+  document.getElementById("go").onclick = run;
+  run();
+})();
+</script>
+</body>
+</html>
