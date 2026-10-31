@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>协同过滤计算器</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+table.t td.c { cursor:pointer; width:3.2em; font-weight:bold; user-select:none; }
+table.t td.on { background:#c5cae9; color:#1a237e; }
+table.t td.me { outline:2px solid var(--warn); }
+table.t tr.sel th { background:#ffe0b2; }
+.heat td { font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+<h1>协同过滤计算器：“去过这家店的人，也常去……”</h1>
+<div class="sub">左边是用户—餐厅矩阵：点格子在“去过（1）”和“没去过（空）”之间切换。右边自动算出餐厅两两之间的余弦相似度，并给选中的用户推荐他没去过的餐厅。</div>
+<div class="grid2">
+  <div class="box"><h2>① 用户—餐厅矩阵（点格子修改；点用户名选中他）</h2><table class="t" id="m"></table>
+    <div class="row ex"><span class="lbl">试试：</span><button id="ex1">恢复示例</button><button id="ex2">让小周也去火锅店</button><button id="ex3">清空小陈</button></div></div>
+  <div class="box"><h2>② 餐厅相似度（余弦相似度，0～1）</h2><table class="t heat" id="s"></table></div>
+</div>
+<div class="box"><h2>③ 给 <span id="who"></span> 的推荐</h2><div id="rec"></div><div class="msg" id="msg"></div></div>
+<div class="note">余弦相似度 = 两家店共同顾客数 ÷ √(甲店顾客数 × 乙店顾客数)。推荐得分 = 把用户去过的每家店与候选店的相似度加起来。这和实验 10-2 的 <code>rec_itemcf</code> 做的是同一件事，只是实验中有 4600 人、300 家店。</div>
+<script>
+(function () {
+  var U = ["小林", "小王", "小李", "小周", "小陈", "小张"], S = ["粤菜馆", "火锅店", "湘菜馆", "甜品店", "日料店", "烧烤店"];
+  var EX = [[1,1,0,1,0,0],[1,1,1,0,0,0],[0,1,1,0,0,1],[1,0,0,1,1,0],[0,0,0,1,1,0],[1,1,0,0,0,0]];
+  var M, me = 5;
+  function reset() { M = EX.map(function (r) { return r.slice(); }); }
+  function sim(i, j) { var a = 0, b = 0, c = 0; for (var u = 0; u < U.length; u++) { a += M[u][i] * M[u][j]; b += M[u][i]; c += M[u][j]; } return b && c ? a / Math.sqrt(b * c) : 0; }
+  function draw() {
+    var h = "<tr><th></th>" + S.map(function (s) { return "<th>" + s + "</th>"; }).join("") + "</tr>";
+    U.forEach(function (u, i) {
+      h += '<tr class="' + (i === me ? "sel" : "") + '"><th data-u="' + i + '" style="cursor:pointer">' + u + "</th>";
+      S.forEach(function (s, j) { h += '<td class="c ' + (M[i][j] ? "on" : "") + '" data-i="' + i + '" data-j="' + j + '">' + (M[i][j] ? 1 : "") + "</td>"; });
+      h += "</tr>";
+    });
+    var m = document.getElementById("m"); m.innerHTML = h;
+    [].forEach.call(m.querySelectorAll("td.c"), function (td) { td.onclick = function () { var i = +td.dataset.i, j = +td.dataset.j; M[i][j] = 1 - M[i][j]; draw(); }; });
+    [].forEach.call(m.querySelectorAll("th[data-u]"), function (th) { th.onclick = function () { me = +th.dataset.u; draw(); }; });
+    var SM = S.map(function (_, i) { return S.map(function (_, j) { return i === j ? null : sim(i, j); }); });
+    h = "<tr><th></th>" + S.map(function (s) { return "<th>" + s + "</th>"; }).join("") + "</tr>";
+    S.forEach(function (s, i) { h += "<tr><th>" + s + "</th>"; S.forEach(function (_, j) { var v = SM[i][j]; h += v === null ? '<td style="color:#bbb">—</td>' : '<td style="background:rgba(63,81,181,' + (v * 0.7).toFixed(2) + ');color:' + (v > 0.55 ? "#fff" : "inherit") + '">' + v.toFixed(2) + "</td>"; }); h += "</tr>"; });
+    document.getElementById("s").innerHTML = h;
+    document.getElementById("who").textContent = U[me];
+    var been = [], cand = [];
+    S.forEach(function (s, j) { if (M[me][j]) been.push(j); else cand.push(j); });
+    var rows = cand.map(function (j) { var sc = 0, parts = []; been.forEach(function (b) { var v = SM[b][j]; sc += v; parts.push(S[b] + " " + v.toFixed(2)); }); return { j: j, sc: sc, parts: parts }; }).sort(function (a, b) { return b.sc - a.sc; });
+    var mx = rows.length ? Math.max(rows[0].sc, 0.01) : 1;
+    var out = rows.map(function (r, k) { return '<div class="barrow" style="grid-template-columns:5em 1fr 4.5em"><span>' + (k + 1) + ". " + S[r.j] + '</span><div><div class="bar" style="width:' + (r.sc / mx * 100) + '%"></div><div style="font-size:11px;color:var(--muted)">' + (r.parts.join(" + ") || "没有去过任何店") + '</div></div><span class="v">' + r.sc.toFixed(2) + "</span></div>"; }).join("");
+    document.getElementById("rec").innerHTML = out || "他每家店都去过了。";
+    var msg;
+    if (!been.length) msg = '<span class="bad">冷启动</span>：' + U[me] + " 一家店都没去过，所有得分都是 0，协同过滤无法推荐。这时只能先推热门餐厅，或者按注册时填的城区推荐（实验 10-3）。";
+    else if (rows.length && rows[0].sc > 0) msg = "排第一的是 <b>" + S[rows[0].j] + "</b>：因为它和 " + U[me] + " 去过的店有很多共同顾客。注意，算法完全不知道每家店是什么菜系，只看“谁和谁一起去过”。";
+    else msg = "所有候选店得分都是 0：没有人同时去过 " + U[me] + " 去过的店和这些店。";
+    document.getElementById("msg").innerHTML = msg;
+  }
+  document.getElementById("ex1").onclick = function () { reset(); me = 5; draw(); };
+  document.getElementById("ex2").onclick = function () { reset(); M[3][1] = 1; me = 3; draw(); };
+  document.getElementById("ex3").onclick = function () { reset(); M[4] = [0,0,0,0,0,0]; me = 4; draw(); };
+  reset(); draw();
+})();
+</script>
+</body>
+</html>
