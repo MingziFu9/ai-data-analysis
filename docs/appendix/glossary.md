@@ -201,6 +201,30 @@ description: 本书主要术语的中英文名称、简明定义和例子，按�
 
 | 术语 | 英文 | 定义 | 例子 |
 |---|---|---|---|
+| <span id="g-数据可视化"></span>数据可视化 | Data Visualization | 把数据画成图表，让人通过眼睛快速看出数量的大小、变化和关系 | 把每月交易额画成折线图 |
+| <span id="g-条形图"></span>条形图 | Bar Chart | 用矩形的长度表示数值大小的图表，竖着放的也叫柱状图，最适合比较各类别的大小 | 各菜系订单数，从大到小排序 |
+| <span id="g-折线图"></span>折线图 | Line Chart | 把各时间点的数值用线连起来，表示随时间变化的趋势 | 2025 年每月交易额 |
+| <span id="g-饼图"></span>饼图 | Pie Chart | 用扇形的大小表示各部分占整体的比例，只适合 2～5 类 | 平台专送 67.8%、商家自送 32.2% |
+| <span id="g-直方图"></span>直方图 | Histogram | 把数值分成若干区间，用柱子高度表示每个区间里有多少个数据，用来看分布 | 实付金额的直方图左高右低、拖着长尾 |
+| <span id="g-箱线图"></span>箱线图 | Box Plot | 用箱子和须线画出一组数据的中位数、四分位数和异常值，适合比较几组数据的分布 | 各城区实付金额的箱线图 |
+| <span id="g-散点图"></span>散点图 | Scatter Plot | 以两个数值变量为横、纵坐标，每个数据画一个点，用来看两者的关系 | 配送距离与送达时长的散点图 |
+| <span id="g-热力图"></span>热力图 | Heatmap | 用颜色深浅表示表格中每个格子数值大小的图 | 星期 × 小时的订单量热力图 |
+| <span id="g-堆叠柱状图"></span>堆叠柱状图 | Stacked Bar Chart | 把一根柱子按组成部分分段堆起来，同时看总量和构成 | 各城区两种配送方式的订单数 |
+| <span id="g-Matplotlib"></span>Matplotlib | Matplotlib | Python 中最基础、最常用的画图库 | `plt.subplots`、`ax.bar` |
+| <span id="g-seaborn"></span>seaborn | seaborn | 基于 Matplotlib 的统计图表库，几行代码就能画出箱线图、热力图等 | `sns.heatmap(透视表)` |
+| <span id="g-子图"></span>子图 | Subplot | 在一块画布上排列的多张小图 | `plt.subplots(2, 4)` 得到 8 张子图 |
+| <span id="g-数据透视图"></span>数据透视图 | PivotChart | WPS / Excel 中由数据透视表直接生成、能随字段拖放变化的图表 | 把“城区”拖到轴、“实付金额”拖到值 |
+| <span id="g-商业智能"></span>商业智能 | Business Intelligence (BI) | 连接数据、拖拽做图、组合看板并分享给他人的一类软件和方法 | 帆软 FineBI、阿里云 Quick BI |
+| <span id="g-误导性图表"></span>误导性图表 | Misleading Chart | 由于画法不当，使读者对数据得出错误印象的图表 | 纵轴从 60% 开始的好评率柱状图 |
+| <span id="g-截断纵轴"></span>截断纵轴 | Truncated Axis | 柱状图的数值轴不从 0 开始，从而放大差别 | 越秀的柱子看起来是黄埔的 10 倍 |
+| <span id="g-双纵轴"></span>双纵轴 | Dual Axis | 一张图左右各有一个纵轴，分别表示两个量；刻度可随意设定，容易制造假象 | 订单数和平均送达时长“一起涨落” |
+| <span id="g-交互图表"></span>交互图表 | Interactive Chart | 可以用鼠标悬停看数值、缩放、点击图例的网页图表 | pyecharts 生成的网页 |
+| <span id="g-pyecharts"></span>pyecharts | pyecharts | 把百度开源的 ECharts 包装成 Python 写法的交互图表库，自带中国地图 | 广州各城区交易额地图 |
+| <span id="g-数据看板"></span>数据看板 | Dashboard | 把核心指标和关键图表放在一个页面上、可以筛选查看的展示页面 | “食客说”经营看板 |
+| <span id="g-指标卡"></span>指标卡 | KPI Card | 看板上用大号字显示单个核心指标及其涨跌的区块 | 订单量 56,655 |
+| <span id="g-Streamlit"></span>Streamlit | Streamlit | 用很少的 Python 代码把数据分析程序变成网页应用的库 | `streamlit run app.py` |
+| <span id="g-数据分析报告"></span>数据分析报告 | Data Analysis Report | 把分析的目的、数据、方法、发现和建议写给决策者看的文档 | “食客说”2025 年经营分析报告 |
+| <span id="g-数据叙事"></span>数据叙事 | Data Storytelling | 把数据、图表和文字组织成有逻辑的线索，引导读者得出结论 | 结论先行，一条发现配一张图 |
 
 ## 第 9 章 建模应用：从 scikit-learn 到预训练模型
 

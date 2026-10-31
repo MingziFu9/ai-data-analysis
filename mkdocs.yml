@@ -62,6 +62,7 @@ nav:
     - "Kappa 计算器": sims/kappa-calculator/index.md
     - "A/B 测试判读": sims/ab-test/index.md
     - "抽样与置信区间": sims/confidence-interval/index.md
+    - "图表选择与纠错": sims/chart-chooser/index.md
   - 学习图谱: learning-graph/index.md
   - 常见问题: faq/index.md
   - 证书考点对照: certificate.md

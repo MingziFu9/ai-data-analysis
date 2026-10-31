@@ -65,7 +65,7 @@
 | [第 5 章 数据标注：任务、规范与工具](chapters/05-annotation/index.md) | 实验 5-1 ★ 编写评论情感与方面标注规范<br>实验 5-2 ★ 用 Label Studio 标注评论<br>实验 5-3 ☆ 图像目标框标注 |
 | [第 6 章 数据标注：质量审核与管理](chapters/06-annotation-qa/index.md) | 实验 6-1 ★ 一致性分析<br>实验 6-2 ★ 抽检验收并写审核报告<br>实验 6-3 ☆ 预标注、主动学习与噪声标签 |
 | [第 7 章 探索性分析与统计推断](chapters/07-statistics/index.md) | 实验 7-1 ★ 门店经营探索性分析<br>实验 7-2 ★ 假设检验<br>实验 7-3 ☆ A/B 测试与辛普森悖论 |
-| [第 8 章 数据可视化与分析报告](chapters/08-visualization/index.md) | 实验 8-1 ★ 实验名称<br>实验 8-2 ★ 实验名称<br>实验 8-3 ★ 实验名称 |
+| [第 8 章 数据可视化与分析报告](chapters/08-visualization/index.md) | 实验 8-1 ★ 常用图表与误导性图表纠错<br>实验 8-2 ★ 交互图表与经营看板<br>实验 8-3 ☆ Streamlit 看板与数据分析报告 |
 | [第 9 章 建模应用：从 scikit-learn 到预训练模型](chapters/09-modeling/index.md) | 实验 9-1 ★ 实验名称<br>实验 9-2 ★ 实验名称<br>实验 9-3 ★ 实验名称 |
 | [第 10 章 推荐系统](chapters/10-recommendation/index.md) | 实验 10-1 ★ 实验名称<br>实验 10-2 ★ 实验名称<br>实验 10-3 ★ 实验名称 |
 | [第 11 章 智能系统运维与优化](chapters/11-operations/index.md) | 实验 11-1 ★ 实验名称<br>实验 11-2 ★ 实验名称<br>实验 11-3 ★ 实验名称 |

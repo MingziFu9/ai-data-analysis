@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图表选择与纠错</title>
+<link rel="stylesheet" href="../common/sim.css">
+<style>
+svg { width:100%; height:auto; display:block; background:#fafbfc; border-radius:6px; }
+.q button { margin:2px; }
+.fix label { display:flex; gap:6px; align-items:center; font-size:13px; margin:3px 0; cursor:pointer; }
+</style>
+</head>
+<body>
+<h1>图表选择与纠错：什么问题用什么图，怎样不误导人</h1>
+<div class="sub">上半部分：选一个分析问题，看推荐的图表和理由。下半部分：选一张误导性图表，逐项勾选改正方法，看图怎样变得诚实。数据来自“食客说”2025 年订单与评论。</div>
+
+<div class="box">
+  <h2>① 我想回答的问题是……</h2>
+  <div class="q row" id="qs"></div>
+  <div class="grid2">
+    <svg id="svg1" viewBox="0 0 360 200"></svg>
+    <div id="why" class="msg"></div>
+  </div>
+</div>
+
+<div class="box">
+  <h2>② 误导性图表纠错</h2>
+  <div class="row" id="cases"></div>
+  <div class="grid2">
+    <svg id="svg2" viewBox="0 0 360 220"></svg>
+    <div class="fix" id="fixes"></div>
+  </div>
+  <div id="msg2" class="msg"></div>
+</div>
+<div class="note">数据：各菜系订单数、每月交易额、配送方式占比等均取自第 8 章实验 8-1 的运行结果。</div>
+
+<script>
+(function () {
+  var C = "#3f51b5", R = "#e53935", G = "#78909c";
+  function T(x, y, s, o) { o = o || {}; return '<text x="' + x + '" y="' + y + '" font-size="' + (o.fs || 10) + '" text-anchor="' + (o.a || "middle") + '" fill="' + (o.c || "#455a64") + '">' + s + "</text>"; }
+  function rect(x, y, w, h, c) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + c + '" rx="2"/>'; }
+
+  var cuisine = [["快餐", 10518], ["粤菜", 9403], ["川菜", 6487], ["甜品饮品", 5627], ["火锅", 5526], ["湘菜", 4958], ["面馆", 4571], ["烧烤", 4473], ["西餐", 3627], ["日料", 1465]];
+  var gmv = [53.9, 39.4, 53.9, 54.3, 61.0, 64.0, 69.3, 72.3, 64.5, 66.9, 76.7, 78.3];
+
+  function bars(data, opt) {      // 横向条形图
+    var h = "", max = data[0][1], bh = 160 / data.length;
+    data.forEach(function (d, i) { var w = d[1] / max * 250; h += T(62, 22 + i * bh + bh / 2, d[0], { a: "end" }) + rect(66, 18 + i * bh, w, bh - 3, opt && opt.c || C); });
+    return h;
+  }
+  function line(vals, y0, y1, from) {
+    from = from || 1; var h = "", n = vals.length, pts = [];
+    vals.forEach(function (v, i) { var x = 40 + i * (300 / Math.max(n - 1, 1)), y = 170 - (v - y0) / (y1 - y0) * 150; pts.push(x + "," + y); h += '<circle cx="' + x + '" cy="' + y + '" r="3" fill="' + C + '"/>' + T(x, 186, (i + from) + "月"); });
+    h = '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + C + '" stroke-width="2"/>' + h;
+    h += T(34, 174, y0, { a: "end" }) + T(34, 24, y1, { a: "end" }) + '<line x1="38" x2="345" y1="170" y2="170" stroke="#b0bec5"/>';
+    return h;
+  }
+  function pie(parts, cx, cy, r) {
+    var tot = parts.reduce(function (s, p) { return s + p[1]; }, 0), a = -Math.PI / 2, h = "", cols = ["#3f51b5", "#ff9800", "#43a047", "#e53935", "#8e24aa", "#00897b", "#6d4c41", "#d81b60", "#7cb342", "#5c6bc0"];
+    parts.forEach(function (p, i) {
+      var b = a + p[1] / tot * 2 * Math.PI, la = b - a > Math.PI ? 1 : 0;
+      h += '<path d="M' + cx + "," + cy + " L" + (cx + r * Math.cos(a)) + "," + (cy + r * Math.sin(a)) + " A" + r + "," + r + " 0 " + la + " 1 " + (cx + r * Math.cos(b)) + "," + (cy + r * Math.sin(b)) + ' Z" fill="' + cols[i % 10] + '" stroke="#fff"/>';
+      var m = (a + b) / 2; h += T(cx + (r + 18) * Math.cos(m), cy + (r + 18) * Math.sin(m) + 3, p[0]);
+      a = b;
+    });
+    return h;
+  }
+  function hist() {
+    var hs = [58, 76, 77, 66, 52, 41, 33, 27, 22, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2, 2, 1, 1, 1], h = "";
+    hs.forEach(function (v, i) { h += rect(30 + i * 13, 170 - v * 1.9, 12, v * 1.9, "#43a047"); });
+    return h + '<line x1="80" x2="80" y1="20" y2="170" stroke="' + R + '" stroke-dasharray="4 3"/>' + T(84, 30, "中位数 93.6 元", { a: "start", c: R }) + T(180, 190, "实付金额（元）→ 右边拖着长尾巴");
+  }
+  function scatter() {
+    var h = "", s = 7;
+    for (var i = 0; i < 160; i++) { s = (s * 9301 + 49297) % 233280; var u = s / 233280; s = (s * 9301 + 49297) % 233280; var v = s / 233280; var d = Math.pow(u, 1.3) * 8; var t = 14 + d * 4 + (v - 0.5) * 16; h += '<circle cx="' + (40 + d * 36) + '" cy="' + (175 - t * 3) + '" r="2.5" fill="' + C + '" opacity=".5"/>'; }
+    return h + T(190, 195, "配送距离（公里）→") + T(6, 16, "↑ 送达时长", { a: "start" });
+  }
+
+  var Q = [
+    { k: "比较", t: "哪个菜系订单最多？", draw: function () { return bars(cuisine); }, w: "<b>比较类别大小 → 条形图（柱状图）</b>。类别多、名字长时用横向条形图，并且<b>从大到小排好序</b>，一眼就能看出排名。纵轴（数值轴）必须从 0 开始。" },
+    { k: "趋势", t: "交易额每个月怎么变？", draw: function () { return line(gmv, 0, 80); }, w: "<b>随时间的变化 → 折线图</b>。横轴是时间，按顺序排列。可以清楚看到 2 月（春节）低谷、9 月回落、全年上升。" },
+    { k: "构成", t: "两种配送方式各占多少？", draw: function () { return pie([["平台专送 67.8%", 67.8], ["商家自送 32.2%", 32.2]], 180, 100, 70); }, w: "<b>部分占整体的比例 → 饼图或环形图</b>，但只适合 2～5 类。类别多了（如 10 个菜系）扇形大小很难比较，应改用排好序的条形图或堆叠柱状图。" },
+    { k: "分布", t: "订单金额一般在什么范围？", draw: hist, w: "<b>一列数值的分布 → 直方图</b>（多组比较分布用箱线图）。能看出数据集中在哪里、有没有长尾和极端值。" },
+    { k: "关系", t: "送得越远，越慢吗？", draw: scatter, w: "<b>两个数值变量的关系 → 散点图</b>。点很多时要抽样或调低透明度，否则糊成一片。想同时看很多列两两之间的关系，用相关矩阵热力图。" },
+    { k: "地理", t: "哪个城区交易额最高？", draw: function () { return bars([["天河", 150.7], ["番禺", 119.8], ["越秀", 113.4], ["海珠", 106.0], ["白云", 95.7], ["荔湾", 70.3], ["黄埔", 53.9], ["花都", 44.5]], { c: "#ef6c00" }) + T(330, 195, "万元", { a: "end" }); }, w: "<b>和地点有关 → 地图（填色地图）</b>，用颜色深浅表示数值，适合让人一眼看出“哪里多”。但要精确比较大小时，颜色不如长度直观，最好同时配一张排好序的条形图（左图）。" }
+  ];
+  var qs = document.getElementById("qs");
+  Q.forEach(function (q, i) { var b = document.createElement("button"); b.textContent = q.k + "：" + q.t; b.onclick = function () { pickQ(i); }; qs.appendChild(b); });
+  function pickQ(i) { [].forEach.call(qs.children, function (b, j) { b.className = i === j ? "on" : ""; }); document.getElementById("svg1").innerHTML = Q[i].draw(); document.getElementById("why").innerHTML = Q[i].w; }
+  pickQ(0);
+
+  // ---------- 纠错 ----------
+  var rate = [["黄埔", 61.1], ["天河", 64.8], ["越秀", 71.7]];
+  var orders = [4075, 2887, 4011, 4148, 4557, 4769, 5143, 5445, 4874, 5132, 5649, 5965];
+  var deliver = [27.5, 27.5, 27.8, 27.8, 29.1, 29.0, 29.0, 29.1, 29.0, 27.7, 27.8, 27.7];
+  var CASES = [
+    { n: "截断纵轴", fixes: ["纵轴从 0 开始", "在柱子上标出数值"], draw: function (f) {
+        var y0 = f[0] ? 0 : 60, y1 = f[0] ? 100 : 72, h = "";
+        rate.forEach(function (d, i) { var x = 70 + i * 90, hh = (d[1] - y0) / (y1 - y0) * 160; h += rect(x, 180 - hh, 60, hh, f[0] ? C : R) + T(x + 30, 196, d[0]); if (f[1]) h += T(x + 30, 174 - hh, d[1] + "%", { fs: 11 }); });
+        return h + T(50, 184, y0 + "%", { a: "end" }) + T(50, 24, y1 + "%", { a: "end" }) + '<line x1="54" x2="340" y1="180" y2="180" stroke="#b0bec5"/>' + T(180, 14, "各城区好评率");
+      }, msg: function (f) { return f[0] ? '<span class="ok">改正后</span>：三个城区相差 10.6 个百分点，差别存在，但没有原图看起来那么夸张。' + (f[1] ? "标出数值后，读者不用估算。" : "") : '<span class="bad">问题</span>：纵轴从 60% 开始，越秀的柱子看起来是黄埔的 10 倍，其实好评率只高 10.6 个百分点。柱状图的长度代表数值，纵轴必须从 0 开始。'; } },
+    { n: "饼图切太多块", fixes: ["改成条形图", "从大到小排序"], draw: function (f) {
+        if (!f[0]) return pie(cuisine.slice().sort(function () { return 0; }).map(function (d, i) { return [d[0], d[1]]; }).sort(function (a, b) { return f[1] ? b[1] - a[1] : (a[0] > b[0] ? 1 : -1); }), 180, 112, 75);
+        var d = f[1] ? cuisine : cuisine.slice().sort(function (a, b) { return a[0] > b[0] ? 1 : -1; }); return bars(d.map(function (x) { return x; })).replace(/rect x="66"/g, 'rect x="66"');
+      }, msg: function (f) { return f[0] ? (f[1] ? '<span class="ok">改正后</span>：排好序的条形图，排名一目了然：火锅 5526 单略多于湘菜 4958 单。' : "改成条形图后，长度好比较了；再勾选“从大到小排序”，排名会更清楚。") : '<span class="bad">问题</span>：10 个扇形里，火锅、甜品饮品、湘菜大小相近，几乎分不出谁多谁少。人眼比较角度和面积远不如比较长度准。'; } },
+    { n: "双纵轴", fixes: ["去掉右纵轴，换算成同一刻度（1 月 = 100）"], draw: function (f) {
+        var h = "", i, pts1 = [], pts2 = [];
+        for (i = 0; i < 12; i++) {
+          var x = 40 + i * 27;
+          if (!f[0]) { pts1.push(x + "," + (180 - (orders[i] - 2800) / 3300 * 160)); pts2.push(x + "," + (180 - (deliver[i] - 27.3) / 2 * 160)); }
+          else { pts1.push(x + "," + (180 - (orders[i] / orders[0] * 100 - 60) / 100 * 160)); pts2.push(x + "," + (180 - (deliver[i] / deliver[0] * 100 - 60) / 100 * 160)); }
+          h += T(x, 196, i + 1);
+        }
+        h += '<polyline points="' + pts1.join(" ") + '" fill="none" stroke="' + C + '" stroke-width="2"/><polyline points="' + pts2.join(" ") + '" fill="none" stroke="' + R + '" stroke-width="2"/>';
+        h += T(40, 14, "— 订单数", { a: "start", c: C }) + T(130, 14, "— 平均送达时长", { a: "start", c: R });
+        if (f[0]) h += T(34, 184, "60", { a: "end" }) + T(34, 24, "160", { a: "end" });
+        else h += T(20, 100, "订单数", { c: C }) + T(345, 100, "分钟", { c: R });
+        return h;
+      }, msg: function (f) { return f[0] ? '<span class="ok">改正后</span>：同一刻度下，12 月订单数是 1 月的 146%，平均送达时长最多只高了 6%（5～9 月是雨季）。订单多并没有让配送明显变慢。' : '<span class="bad">问题</span>：左右两个纵轴的范围是作者随意设的，右轴只覆盖 27.3～29.3 分钟，1 分钟的变化被放大成整张图的高度，看起来“订单越多送得越慢”。'; } },
+    { n: "只截一段时间", fixes: ["显示全年 12 个月", "纵轴从 0 开始"], draw: function (f) {
+        var v = f[0] ? gmv : gmv.slice(7, 9), y0 = f[1] ? 0 : Math.floor(Math.min.apply(null, v) - 1), y1 = f[1] ? 80 : Math.ceil(Math.max.apply(null, v) + 1);
+        return line(v, y0, y1, f[0] ? 1 : 8) + T(180, 14, "每月交易额（万元）");
+      }, msg: function (f) { return f[0] ? '<span class="ok">看全年</span>：9 月比 8 月回落 10.8%，但 10～12 月又创新高，全年是上升趋势。' + (f[1] ? "纵轴从 0 开始，波动的幅度也不再被放大。" : "") : '<span class="bad">问题</span>：只截取 8～9 月两个点，纵轴又只覆盖 64～73 万元，交易额看起来“暴跌”。挑对自己有利的时间段，是最常见的误导手法。'; } }
+  ];
+  var cases = document.getElementById("cases"), fixes = document.getElementById("fixes"), cur = 0, state = [];
+  CASES.forEach(function (c, i) { var b = document.createElement("button"); b.textContent = c.n; b.onclick = function () { pickC(i); }; cases.appendChild(b); });
+  function render() { var c = CASES[cur]; document.getElementById("svg2").innerHTML = c.draw(state); document.getElementById("msg2").innerHTML = c.msg(state); }
+  function pickC(i) {
+    cur = i; state = CASES[i].fixes.map(function () { return false; });
+    [].forEach.call(cases.children, function (b, j) { b.className = i === j ? "on" : ""; });
+    fixes.innerHTML = "<b style='font-size:13px'>改正方法（可以逐项勾选）：</b>";
+    CASES[i].fixes.forEach(function (t, k) { var l = document.createElement("label"); l.innerHTML = '<input type="checkbox"> ' + t; l.firstChild.onchange = function () { state[k] = this.checked; render(); }; fixes.appendChild(l); });
+    render();
+  }
+  pickC(0);
+})();
+</script>
+</body>
+</html>
