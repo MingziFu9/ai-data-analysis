@@ -61,3 +61,54 @@ lesson_plan:
   online_ratio: 0.5                   # 线上学时占比（开放大学以线上为主，按实际改）
   teacher: ""                         # 授课教师，留空则教案上留出填写位置
   school: ""                          # 学校名称，留空则不显示
+
+# 首页“先玩一玩”轮播：按轮播顺序写，第 1 个放画面最震撼的。sim 是 docs/sims/ 下的目录名，hook 是一句问句，play 是一句玩法；
+# steps 是录短视频时自动做的操作（写法见 编写规范.md“首页轮播”）。改完运行 python tools/showcase.py record 重录视频。
+showcase_tagline: "AI 的燃料是数据：采集、清洗、标注、分析一条龙"
+showcase:
+  - sim: bbox-iou
+    hook: "你画的框，和标准答案重合了多少？"
+    play: "在真实照片上拖框，交并比实时算出来。"
+    steps:
+      - ["click", "左下的碗", {"hold": 1}]
+      - ["click", "右边的碗", {"hold": 1}]
+      - ["click", "中间的杯子", {"hold": 1.2}]
+      - ["poster"]
+  - sim: rfm-segments
+    hook: "拖动三根门槛，把顾客分成八种人"
+    play: "重要价值客户占多少？贡献了多少消费？"
+    steps:
+      - ["slide", "#r", 90, {"hold": 0.8}]
+      - ["slide", "#f", 30, {"hold": 0.8}]
+      - ["poster"]
+      - ["slide", "#m", 4000, {"hold": 0.8}]
+      - ["click", "#svg", {"hold": 0}]
+      - ["click", {"role": "button", "name": "恢复为中位数", "exact": false}, {"hold": 1}]
+  - sim: missing-outliers
+    hook: "换一种方法，结果差了多少？"
+    play: "3σ 和箱线图各揪出哪些“异常”订单。"
+    steps:
+      - ["click", "箱线图法（IQR）", {"hold": 1}]
+      - ["slide", "#k", 1.5, {"hold": 1}]
+      - ["poster"]
+      - ["click", "填平均值", {"hold": 1}]
+      - ["click", "按城区填中位数", {"hold": 1.2}]
+  - sim: item-cf
+    hook: "“去过这家店的人，也常去……”是怎么算出来的"
+    play: "改一格打卡记录，推荐名单马上重排。"
+    vw: 860
+    steps:
+      - ["click", "让小周也去火锅店", {"hold": 1.3}]
+      - ["poster"]
+      - ["click", "清空小陈", {"hold": 1.1}]
+      - ["click", "恢复示例", {"hold": 1}]
+  - sim: data-masking
+    hook: "同一条记录，怎样既能分析又不泄露隐私？"
+    play: "换一种脱敏方式，看可用性和风险此消彼长。"
+    vw: 860
+    steps:
+      - ["click", "交给外部公司做标注", {"hold": 1.2}]
+      - ["click", "看推荐做法", {"hold": 1.5}]
+      - ["poster"]
+      - ["click", "RFM 用户分群（第 9 章）", {"hold": 1}]
+      - ["click", "看推荐做法", {"hold": 1.2}]

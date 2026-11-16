@@ -11,6 +11,22 @@
     对应证书：人工智能训练师（四级）、人工智能数据处理工程师（中级）、Python 技术应用工程师（中级）
 <!-- course:end -->
 
+<!-- showcase:start -->
+## 先玩一玩
+
+<p class="sc-tagline">AI 的燃料是数据：采集、清洗、标注、分析一条龙</p>
+
+<div class="showcase" aria-label="精选交互动画">
+<ol class="sc-list">
+<li data-sim="sims/bbox-iou/main.html" data-video="assets/showcase/bbox-iou" data-title="目标框标注与交并比" data-play="在真实照片上拖框，交并比实时算出来。"><img src="assets/showcase/bbox-iou.jpg" alt="目标框标注与交并比截图" loading="lazy"><p class="sc-hook">你画的框，和标准答案重合了多少？</p><p><b>目标框标注与交并比</b>　在真实照片上拖框，交并比实时算出来。</p><p><a href="sims/bbox-iou/main.html">打开动画</a>　<a class="sc-chap" href="chapters/05-annotation/" title="第 5 章 数据标注：任务、规范与工具">去读第5章 →</a></p></li>
+<li data-sim="sims/rfm-segments/main.html" data-video="assets/showcase/rfm-segments" data-title="RFM 分群" data-play="重要价值客户占多少？贡献了多少消费？"><img src="assets/showcase/rfm-segments.jpg" alt="RFM 分群截图" loading="lazy"><p class="sc-hook">拖动三根门槛，把顾客分成八种人</p><p><b>RFM 分群</b>　重要价值客户占多少？贡献了多少消费？</p><p><a href="sims/rfm-segments/main.html">打开动画</a>　<a class="sc-chap" href="chapters/09-modeling/" title="第 9 章 建模应用：从 scikit-learn 到预训练模型">去读第9章 →</a></p></li>
+<li data-sim="sims/missing-outliers/main.html" data-video="assets/showcase/missing-outliers" data-title="缺失值与异常值处理" data-play="3σ 和箱线图各揪出哪些“异常”订单。"><img src="assets/showcase/missing-outliers.jpg" alt="缺失值与异常值处理截图" loading="lazy"><p class="sc-hook">换一种方法，结果差了多少？</p><p><b>缺失值与异常值处理</b>　3σ 和箱线图各揪出哪些“异常”订单。</p><p><a href="sims/missing-outliers/main.html">打开动画</a>　<a class="sc-chap" href="chapters/04-cleaning/" title="第 4 章 数据清洗与整合">去读第4章 →</a></p></li>
+<li data-sim="sims/item-cf/main.html" data-video="assets/showcase/item-cf" data-title="协同过滤计算器" data-play="改一格打卡记录，推荐名单马上重排。"><img src="assets/showcase/item-cf.jpg" alt="协同过滤计算器截图" loading="lazy"><p class="sc-hook">“去过这家店的人，也常去……”是怎么算出来的</p><p><b>协同过滤计算器</b>　改一格打卡记录，推荐名单马上重排。</p><p><a href="sims/item-cf/main.html">打开动画</a>　<a class="sc-chap" href="chapters/10-recommendation/" title="第 10 章 推荐系统">去读第10章 →</a></p></li>
+<li data-sim="sims/data-masking/main.html" data-video="assets/showcase/data-masking" data-title="数据脱敏演示" data-play="换一种脱敏方式，看可用性和风险此消彼长。"><img src="assets/showcase/data-masking.jpg" alt="数据脱敏演示截图" loading="lazy"><p class="sc-hook">同一条记录，怎样既能分析又不泄露隐私？</p><p><b>数据脱敏演示</b>　换一种脱敏方式，看可用性和风险此消彼长。</p><p><a href="sims/data-masking/main.html">打开动画</a>　<a class="sc-chap" href="chapters/12-ethics-project/" title="第 12 章 数据伦理、隐私合规与综合项目">去读第12章 →</a></p></li>
+</ol>
+</div>
+<!-- showcase:end -->
+
 ## 这本书讲什么
 
 人工智能模型的好坏，七分在数据。一个点评平台要做评论情感分析，先要把散落在订单库、开放接口里的数据采集下来，清洗干净，再请标注员按统一规范给评论打上“好评”“差评”，审核标注质量，然后才轮得到建模；模型上线以后，还要有人盯着它的表现，把判错的评论整理出来交给工程师改进。这一整条链上的工作，就是人工智能训练师、数据标注员、数据分析师每天在做的事，也是本书要教会你的事。
