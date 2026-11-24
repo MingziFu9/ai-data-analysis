@@ -406,6 +406,22 @@ parts = [clean_orders(first, shops), clean_orders(second, shops)]
 
 这样做的好处是：同样的规则只写一次，不会因为复制粘贴而改漏；规则要改时只改一处；别人拿到 `cleaning.py` 就能复现你的清洗过程。这种把多个处理步骤串起来、可以反复使用的处理过程，常被称为[**数据处理流水线**](../../appendix/glossary.md#g-数据处理流水线 "把多个数据处理步骤按顺序串起来、可以对新数据反复执行的处理过程"){ .term }。实验 4-3 会验证：分两批清洗和一次清洗，得到的结果完全一样。
 
+??? microvideo "思维工具微课｜“重复的就删掉”，这条规则会误伤谁？　4 分 05 秒"
+
+    <video class="mv-video" controls preload="none" playsinline poster="../../assets/video/a2.jpg">
+      <source src="../../assets/video/a2.mp4" type="video/mp4">
+    </video>
+
+    **这一集的思维工具：找反例。** 什么时候用：定下一条规则，交给程序执行。怎么用：想一个它会误伤的真实情况。局限：想不到的，要靠抽查。
+
+    **看完选两件做：**
+
+    - 玩一玩：给实验里的每条清洗规则，各写一个反例。
+    - 审一审 AI：让它写清洗代码，再问它会误删什么。
+    - 想一想自己：你定过的哪条“一刀切”，误伤过谁。
+
+    <p class="mv-note">本片配音和部分画面由 AI 生成。</p>
+
 ## 4.8 前沿视窗
 
 **数据质量校验工具。** 本章是用自己写的规则一项项检查数据质量的。在企业中，常用专门的工具把质量规则写成“数据契约”，每次新数据到达时自动检查，不合格就报警、不让它进入下游。Python 中比较流行的有 pandera 和 Great Expectations：前者可以给 DataFrame 定义“这一列必须是整数、必须大于 0、不能为空”这样的规则；后者能自动生成数据质量报告。<sup class="cite">[[5]](#ref4-5)</sup><sup class="cite">[[6]](#ref4-6)</sup> 大型企业的数据平台（如阿里云 DataWorks、华为云 DataArts）也都内置了数据质量监控模块。
